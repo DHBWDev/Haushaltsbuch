@@ -5,6 +5,10 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
+<%@taglib tagdir="/WEB-INF/tags/templates" prefix="template"%>
+
+<%-- 
 <!DOCTYPE html>
 <html>
     <head>
@@ -12,6 +16,21 @@
         <title>JSP Page</title>
     </head>
     <body>
+        --%>
+        
+        <template:base>
+        
+            <jsp:attribute name="content">
+        
+        
         <h1>Hello World!</h1>
+        
+        </jsp:attribute>
+        
+        
+        </template:base>
+
+<%-- 
     </body>
 </html>
+--%>
