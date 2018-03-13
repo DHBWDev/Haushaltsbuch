@@ -1,12 +1,3 @@
-/*
- * Copyright © 2018 Dennis Schulmeister-Zimolong
- * 
- * E-Mail: dhbw@windows3.de
- * Webseite: https://www.wpvs.de/
- * 
- * Dieser Quellcode ist lizenziert unter einer
- * Creative Commons Namensnennung 4.0 International Lizenz.
- */
 package ejb;
 
 import java.util.List;
@@ -46,7 +37,7 @@ public abstract class EntityBean<Entity, EntityId> {
      * @param id Schlüsselwert
      * @return Gefundener Datensatz oder null
      */
-    public Entity findById(EntityId id) {
+    public Entity findeMitId(EntityId id) {
         if (id == null) {
             return null;
         }
@@ -57,7 +48,7 @@ public abstract class EntityBean<Entity, EntityId> {
      * Auslesen aller Datensätze (Reihenfolge undefiniert)
      * @return Liste mit allen Datensätzen
      */
-    public List<Entity> findAll() {
+    public List<Entity> findeAlle() {
         String select = "SELECT e FROM $E e".replace("$E", this.entityClass.getName());
         return em.createQuery(select).getResultList();
     }
@@ -67,7 +58,7 @@ public abstract class EntityBean<Entity, EntityId> {
      * @param entity Zu speichernder Datensatz
      * @return Gespeicherter Datensatz
      */
-    public Entity saveNew(Entity entity) {
+    public Entity speichernNeu(Entity entity) {
         em.persist(entity);
         return em.merge(entity);
     }
@@ -77,7 +68,7 @@ public abstract class EntityBean<Entity, EntityId> {
      * @param entity Zu speichernder Datensatz
      * @return Gespeicherter Datensatz
      */
-    public Entity update(Entity entity) {
+    public Entity aktualisieren(Entity entity) {
         return em.merge(entity);
     }
 
@@ -85,7 +76,7 @@ public abstract class EntityBean<Entity, EntityId> {
      * Vorhandenen Dantensatz löschen
      * @param entity Zu löschender Datensatz
      */
-    public void delete(Entity entity) {
+    public void löschen(Entity entity) {
         em.remove(em.merge(entity));
     }
 }
