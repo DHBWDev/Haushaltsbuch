@@ -1,0 +1,49 @@
+
+/*
+ * ALLGEMEINE LAYOUTOPTIONEN
+ */
+@import url('https://fonts.googleapis.com/css?family=Quicksand');
+
+
+html, body {
+    padding: 0;
+    margin: 0;
+}
+
+html {
+    /*font-family: 'Quicksand', sans-serif;
+    font-size: 14pt;*/
+
+    background-color: rgb(250, 250, 250);
+    color: rgb(83, 91, 94);
+
+    background-image: url(../img/background.png);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+
+    box-sizing: border-box;
+    height: 100%;
+}
+
+.navbar-brand {
+    
+    font-size: 1.7rem;
+    
+}
+
+input {
+    
+}
+
+
+
+/* Farben für Links */
+a, a:visited {
+    color: rgb(193, 33, 33);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
