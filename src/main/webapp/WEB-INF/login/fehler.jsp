@@ -3,10 +3,9 @@
 <%@taglib tagdir="/WEB-INF/tags/templates" prefix="template"%>
 
 <template:base>
-
     <jsp:attribute name="content">
-
-        <h2>Hello World!</h2>
-
+        <p>
+            Das hat leider nicht geklappt. 🐻
+        </p>
     </jsp:attribute>
 </template:base>
