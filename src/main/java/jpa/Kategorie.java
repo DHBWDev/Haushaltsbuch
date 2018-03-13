@@ -1,6 +1,8 @@
 package jpa;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -25,6 +27,6 @@ public class Kategorie implements Serializable {
     Benutzer benutzer = null;
     
     //muss optional true sein?
-    @OneToMany(mappedBy = "transaktion", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    Transaktion transaktion = null;
+    @OneToMany(mappedBy = "kategorie", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    List<Transaktion> transaktionen = new ArrayList<>();
 }

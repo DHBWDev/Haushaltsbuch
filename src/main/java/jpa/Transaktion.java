@@ -2,6 +2,7 @@ package jpa;
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -9,6 +10,7 @@ import javax.validation.constraints.NotNull;
 import jpa.Benutzer;
 import jpa.Kategorie;
 
+@Entity
 public class Transaktion implements Serializable{
     @Id
     @GeneratedValue
