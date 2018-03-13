@@ -1,14 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ejb;
 
-/**
- *
- * @author Fabio Kraemer
- */
-public class KategorieBean {
+import java.util.List;
+import jpa.Kategorie;
+
+public class KategorieBean extends EntityBean<Kategorie, Long> {
+
+    public KategorieBean() {
+        super(Kategorie.class);
+    }
     
+    public List<Kategorie> findeAlle() {
+        return this.em.createQuery("SELECT c FROM Kategorie").getResultList();
+    }
 }
