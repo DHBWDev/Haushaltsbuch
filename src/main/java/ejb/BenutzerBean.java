@@ -33,14 +33,14 @@ public class BenutzerBean {
         em.persist(benutzer);
     }
 
-    @RolesAllowed("")
+    /* @RolesAllowed("")
     public void aenderePasswort(Benutzer benutzer, String altesPasswort, String neuesPasswort) throws InvalidCredentialsException {
         if (benutzer == null || !benutzer.testePasswort(altesPasswort)) {
             throw new InvalidCredentialsException("Benutzername oder Passwort sind falsch.");
         }
 
         benutzer.setPasswort(neuesPasswort);
-    }
+    }*/
 
     @RolesAllowed("")
     public void löschen(Benutzer benutzer) {
