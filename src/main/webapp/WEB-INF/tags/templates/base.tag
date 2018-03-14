@@ -17,6 +17,7 @@
 
         <link rel="stylesheet" href="<c:url value="/css/main.css"/>" />
         <link rel="stylesheet" href="<c:url value="/css/form.css"/>" />
+        <link rel="stylesheet" href="<c:url value="/css/transaktion_liste.css"/>" />
         
         <title>Haushaltsbuch</title>
 
