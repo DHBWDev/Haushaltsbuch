@@ -37,7 +37,7 @@ public class IndexServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
         
-        this.transaktionBean.importiereXML();
+        //this.transaktionBean.importiereXML();
 
         response.sendRedirect(WebUtils.appUrl(request, "/app/transaktionen/"));
     }
