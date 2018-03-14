@@ -6,8 +6,12 @@
 
     <jsp:attribute name="content">
 
-        <h2>Hello World!</h2>
+        <h2>Hello World2!</h2>
+
+        
 
     </jsp:attribute>
+
+    
 </template:base>
 
