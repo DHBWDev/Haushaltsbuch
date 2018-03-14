@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.TableGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
@@ -13,9 +14,11 @@ import jpa.Benutzer;
 import jpa.Kategorie;
 
 @Entity
-public class Transaktion implements Serializable{
+public class Transaktion implements Serializable {
+
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator = "transaktion_ids")
+    @TableGenerator(name = "transaktion_ids", initialValue = 0, allocationSize = 1)
     private long id;
    
     @NotNull(message = "Die Bezeichnung darf nicht leer sein.")

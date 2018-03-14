@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Transaktionsverzeichnis>
+	<Transaktion>
+		<Bezeichnung>	Auto tanken</Bezeichnung>
+		<Beschreibung>	Heute hab ich mein Auto getankt</Beschreibung>
+		<Betrag>	50 </Betrag>
+		<ErstellungsDatum> 10.11.2016</ErstellungsDatum>
+		<Art>		Ausgabe</Art>
+		<Benutzer>	Samuel</Benutzer>
+		<Kategorie>	Auto</Kategorie>
+	</Transaktion>
+	<Transaktion>
+		<Bezeichnung>	Fahrrad reparieren</Bezeichnung>
+		<Beschreibung>	Fahrrad hatte einen platten Reifen</Beschreibung>
+		<Betrag>	8 </Betrag>
+		<ErstellungsDatum> 15.11.2016</ErstellungsDatum>
+		<Art>		Ausgabe</Art>
+		<Benutzer>	Samuel</Benutzer>
+		<Kategorie>	Sonstiges</Kategorie>
+	</Transaktion>
+</Transaktionsverzeichnis> 

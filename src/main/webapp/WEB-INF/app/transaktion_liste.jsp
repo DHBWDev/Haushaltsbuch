@@ -73,5 +73,7 @@
             </c:otherwise>
         </c:choose>
     </jsp:attribute>
+
+    
 </template:base>
 
