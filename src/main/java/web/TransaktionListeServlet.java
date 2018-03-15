@@ -55,6 +55,8 @@ public class TransaktionListeServlet extends HttpServlet {
        
         List<Transaktion> transaktionen = this.transaktionBean.suche(suchtext, kategorie);
         request.setAttribute("transaktionen", transaktionen);
+        
+        //transaktionBean.getSummeVonMonatBisMonat(1, 2);
        
        
         // Anfrage an die JSP weiterleiten

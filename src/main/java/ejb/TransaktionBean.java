@@ -3,6 +3,7 @@ package ejb;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import javax.ejb.Stateless;
 import jpa.Benutzer;
@@ -23,10 +24,6 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
 
     public TransaktionBean() {
         super(Transaktion.class);
-    }
-
-    public List<Transaktion> findeAlle() {
-        return this.em.createQuery("SELECT c FROM Transaktion").getResultList();
     }
     
     public List<Transaktion> suche(String suchtext, Kategorie kategorie){
@@ -53,7 +50,41 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
         
         return em.createQuery(query).getResultList();
     }
-
+    
+    public List<Transaktion> getTransaktionenVonDatumBisDatum(Date vonDatum, Date bisDatum){
+        return em.createQuery("SELECT t FROM Transaktion t "
+                            + " WHERE t.erstellungsDatum >= :vonDatum"
+                            + " AND t.erstellungsDatum <= :bisDatum"
+                            + " ORDER BY t.erstellungsDatum")
+                .setParameter("vonDatum", vonDatum)
+                .setParameter("bisDatum", bisDatum)
+                .getResultList();
+    }
+    
+    public void getSummeVonMonatBisMonat(Integer vonMonat, Integer bisMonat){
+        List result;
+        
+       /* Iterator<String> it = result.listIterator();
+        
+        while (it.hasNext()){
+            System.out.println(it.toString());
+        }*/
+       
+        /*CriteriaBuilder cb = em.getCriteriaBuilder();
+       
+        CriteriaQuery<Long> query = cb.createQuery(Long.class);
+        
+        query.select(query.);
+        
+        result = em.createQuery("SELECT i FROM (SELECT MONTH(ERSTELLUNGSDATUM) AS MONAT, SUM(BETRAG) AS SUMMEBETRAG"
+                + "FROM HAUSHALTSBUCH.TRANSAKTION"
+                + "GROUP BY MONTH(ERSTELLUNGSDATUM)"
+                + "ORDER BY MONAT) i where MONAT >= :vonMonat and MONAT <= :bisMonat")
+                .setParameter("vonMonat", vonMonat)
+                .setParameter("bisMonat", bisMonat)
+                .getResultList();*/
+    }
+    
     //importiert Transaktionen aus einer XML-File
     public void importiereXML() {
         Document doc = null;
