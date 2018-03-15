@@ -66,18 +66,13 @@
                 // The type of chart we want to create
                 type: 'line',
                 // The data for our dataset
-                data: {
-                    labels: ["January", "February", "March", "April", "May", "June", "July"],
-                    datasets: [{
-                            label: "Monatsausgaben",
-                            backgroundColor: 'rgb(255, 0, 0)',
-                            borderColor: 'rgb(255, 0, 0)',
-                            data: ${daten}
-                        }]
-                },
+                data: 
+                            ${monatsausgaben}
+                ,
                 // Configuration options go here
                 options: {}
             });
+            debugger;
         </script>
 
         <script type="text/javascript">
@@ -87,15 +82,9 @@
                 // The type of chart we want to create
                 type: 'line',
                 // The data for our dataset
-                data: {
-                    labels: ["January", "February", "March", "April", "May", "June", "July"],
-                    datasets: [{
-                            label: "Monatseinnahmen",
-                            backgroundColor: 'rgb(0, 255, 0)',
-                            borderColor: 'rgb(0, 255, 0)',
-                            data: [0, 10, 5, 2, 20, 30, 45]
-                        }]
-                },
+                data:  
+                            ${monatseinnahmen}
+                ,
                 // Configuration options go here
                 options: {}
             });
