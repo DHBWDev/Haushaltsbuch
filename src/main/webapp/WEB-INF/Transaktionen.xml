@@ -3,7 +3,7 @@
 	<Transaktion>
 		<Bezeichnung>	Auto tanken</Bezeichnung>
 		<Beschreibung>	Heute hab ich mein Auto getankt</Beschreibung>
-		<Betrag>	50 </Betrag>
+		<Betrag>	52.23 </Betrag>
 		<ErstellungsDatum> 10.11.2016</ErstellungsDatum>
 		<Art>		Ausgabe</Art>
 		<Benutzer>	Samuel</Benutzer>
@@ -12,10 +12,19 @@
 	<Transaktion>
 		<Bezeichnung>	Fahrrad reparieren</Bezeichnung>
 		<Beschreibung>	Fahrrad hatte einen platten Reifen</Beschreibung>
-		<Betrag>	8 </Betrag>
+		<Betrag>	7.60 </Betrag>
 		<ErstellungsDatum> 15.11.2016</ErstellungsDatum>
 		<Art>		Ausgabe</Art>
 		<Benutzer>	Samuel</Benutzer>
-		<Kategorie>	Sonstiges</Kategorie>
+		<Kategorie>	Fahrrad</Kategorie>
+	</Transaktion>
+	<Transaktion>
+		<Bezeichnung>	Dividenden</Bezeichnung>
+		<Beschreibung>	Dividenden-Einnahmen</Beschreibung>
+		<Betrag>	100.86 </Betrag>
+		<ErstellungsDatum> 15.11.2016</ErstellungsDatum>
+		<Art>		Einnahme</Art>
+		<Benutzer>	Samuel</Benutzer>
+		<Kategorie>	Börse</Kategorie>
 	</Transaktion>
 </Transaktionsverzeichnis> 
