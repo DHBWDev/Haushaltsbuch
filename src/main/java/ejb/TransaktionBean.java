@@ -3,13 +3,13 @@ package ejb;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import jpa.Benutzer;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import jpa.Benutzer;
 import jpa.Kategorie;
 import jpa.Transaktion;
 
@@ -22,14 +22,17 @@ import org.jdom2.output.XMLOutputter;
 @Stateless
 public class TransaktionBean extends EntityBean<Transaktion, Long> {
 
+    @EJB
+    KategorieBean kategorieBean;
+
     public TransaktionBean() {
         super(Transaktion.class);
     }
-    
-    public List<Transaktion> suche(String suchtext, Kategorie kategorie){
+
+    public List<Transaktion> suche(String suchtext, Kategorie kategorie) {
         // Hilfsobjekt zum Bauen des Query
         CriteriaBuilder cb = this.em.getCriteriaBuilder();
-        
+
         // SELECT t FROM Angebot t
         CriteriaQuery<Transaktion> query = cb.createQuery(Transaktion.class);
         Root<Transaktion> from = query.from(Transaktion.class);
@@ -37,40 +40,39 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
 
         // ORDER BY erstellungsDatum, erstellungsDatum
         query.orderBy(cb.asc(from.get("erstellungsDatum")), cb.asc(from.get("erstellungsDatum")));
-        
+
         // WHERE t.bezeichnung LIKE :search
         if (suchtext != null && !suchtext.trim().isEmpty()) {
             query.where(cb.like(from.get("bezeichnung"), "%" + suchtext + "%"));
         }
-        
+
         // WHERE t.category = :category
         if (kategorie != null) {
             query.where(cb.equal(from.get("kategorie"), kategorie));
         }
-        
+
         return em.createQuery(query).getResultList();
     }
-    
-    public List<Transaktion> getTransaktionenVonDatumBisDatum(Date vonDatum, Date bisDatum){
+
+    public List<Transaktion> getTransaktionenVonDatumBisDatum(Date vonDatum, Date bisDatum) {
         return em.createQuery("SELECT t FROM Transaktion t "
-                            + " WHERE t.erstellungsDatum >= :vonDatum"
-                            + " AND t.erstellungsDatum <= :bisDatum"
-                            + " ORDER BY t.erstellungsDatum")
+                + " WHERE t.erstellungsDatum >= :vonDatum"
+                + " AND t.erstellungsDatum <= :bisDatum"
+                + " ORDER BY t.erstellungsDatum")
                 .setParameter("vonDatum", vonDatum)
                 .setParameter("bisDatum", bisDatum)
                 .getResultList();
     }
-    
-    public void getSummeVonMonatBisMonat(Integer vonMonat, Integer bisMonat){
+
+    public void getSummeVonMonatBisMonat(Integer vonMonat, Integer bisMonat) {
         List result;
-        
-       /* Iterator<String> it = result.listIterator();
+
+        /* Iterator<String> it = result.listIterator();
         
         while (it.hasNext()){
             System.out.println(it.toString());
         }*/
-       
-        /*CriteriaBuilder cb = em.getCriteriaBuilder();
+ /*CriteriaBuilder cb = em.getCriteriaBuilder();
        
         CriteriaQuery<Long> query = cb.createQuery(Long.class);
         
@@ -84,11 +86,10 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
                 .setParameter("bisMonat", bisMonat)
                 .getResultList();*/
     }
-    
+
     //importiert Transaktionen aus einer XML-File
-    public void importiereXML() {
+    public void importiereXML(File f, Benutzer aktuellerBenutzer) {
         Document doc = null;
-        File f = new File("Transaktionen.xml");
 
         try {
             // Das Dokument erstellen
@@ -100,7 +101,7 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
             Element root = doc.getRootElement();
 
             List<Element> children = root.getChildren();
-    
+
             int i = 0;
             while (i < children.size()) {
                 Transaktion t = new Transaktion();
@@ -111,8 +112,7 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
 
                 Element betrag = children.get(i).getChild("Betrag");
 
-                Element erstellungsDatum = children.get(i).getChild("ErstellungsDatum");
-
+                //Element erstellungsDatum = children.get(i).getChild("ErstellungsDatum");
                 Element art = children.get(i).getChild("Art");
 
                 Element benutzer = children.get(i).getChild("Benutzer");
@@ -123,11 +123,25 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
 
                 //XML-Werte dem Objekte übergeben
                 t.setArt(art.getValue());
-                t.setBenutzer(null);
+                t.setBenutzer(aktuellerBenutzer);
+                t.setBetrag(Double.valueOf(betrag.getValue()));
                 t.setBeschreibung(beschreibung.getValue());
                 t.setBezeichnung(bezeichnung.getValue());
-                t.setErstellungsDatum(null);
-                t.setKategorie(null);
+                t.setErstellungsDatum(new Date(System.currentTimeMillis()));
+
+                //Kategorieprüfung - Ist Kategorie schon vorhanden?
+                //Suche übergebene Kategorie
+                Kategorie aktuelleKategorie = this.kategorieBean.findeMitId(kategorie.getValue());
+                //Wenn ungleich null -> Kategorie vorhanden
+                if (aktuelleKategorie != null) {
+                    t.setKategorie(aktuelleKategorie);
+                } else {
+                    //Wenn null -> neue Kategorie anlegen
+                    //String bezeichnung, String art, Benutzer benutzer
+                    aktuelleKategorie = new Kategorie(kategorie.getValue(), art.getValue(), aktuellerBenutzer);
+                    this.kategorieBean.speichernNeu(aktuelleKategorie);
+                    t.setKategorie(aktuelleKategorie);
+                }
 
                 this.speichernNeu(t);
 

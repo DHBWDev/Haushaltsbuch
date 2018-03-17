@@ -10,8 +10,7 @@ import javax.persistence.TableGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
-import jpa.Benutzer;
-import jpa.Kategorie;
+
 
 @Entity
 public class Transaktion implements Serializable {
@@ -21,7 +20,7 @@ public class Transaktion implements Serializable {
     @TableGenerator(name = "transaktion_ids", initialValue = 0, allocationSize = 1)
     private long id;
    
-    @NotNull(message = "Die Bezeichnung darf nicht leer sein.")
+    //@NotNull(message = "Die Bezeichnung darf nicht leer sein.")
     private String bezeichnung;
     
     private String beschreibung;
@@ -33,7 +32,7 @@ public class Transaktion implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date erstellungsDatum = new Date();
     
-    @NotNull(message = "Die Art darf nicht leer sein")  
+    //@NotNull(message = "Die Art darf nicht leer sein")  
     private String art;
     
     @ManyToOne

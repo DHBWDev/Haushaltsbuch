@@ -14,6 +14,7 @@ public class KategorieBean extends EntityBean<Kategorie, String> {
    /* public List<Kategorie> findeAlle() {
         return this.em.createQuery("SELECT c FROM Kategorie").getResultList();
     }*/
+ 
     
     public String Test(){
         return "test";
