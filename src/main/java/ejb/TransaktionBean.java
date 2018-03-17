@@ -1,10 +1,16 @@
 package ejb;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+import java.io.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.*;
+import javax.servlet.http.*;
 import javax.ejb.Stateless;
 import jpa.Benutzer;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -12,12 +18,14 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import jpa.Kategorie;
 import jpa.Transaktion;
+import jpa.TransaktionsArten;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.XMLOutputter;
+import web.WebUtils;
 
 @Stateless
 public class TransaktionBean extends EntityBean<Transaktion, Long> {
@@ -51,38 +59,51 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
         return em.createQuery(query).getResultList();
     }
     
-    public List<Transaktion> getTransaktionenVonDatumBisDatum(Date vonDatum, Date bisDatum){
-        return em.createQuery("SELECT t FROM Transaktion t "
-                            + " WHERE t.erstellungsDatum >= :vonDatum"
-                            + " AND t.erstellungsDatum <= :bisDatum"
-                            + " ORDER BY t.erstellungsDatum")
-                .setParameter("vonDatum", vonDatum)
-                .setParameter("bisDatum", bisDatum)
-                .getResultList();
+    public List<Transaktion> getTransaktionenVonDatumBisDatum(Date vonDatum, Date bisDatum, TransaktionsArten art){
+                // Hilfsobjekt zum Bauen des Query
+        CriteriaBuilder cb = this.em.getCriteriaBuilder();
+        
+        // SELECT t FROM Angebot t
+        CriteriaQuery<Transaktion> query = cb.createQuery(Transaktion.class);
+        Root<Transaktion> from = query.from(Transaktion.class);
+        query.select(from);
+
+        // ORDER BY erstellungsDatum, erstellungsDatum
+        query.orderBy(cb.asc(from.get("erstellungsDatum")), cb.asc(from.get("erstellungsDatum")));
+        
+        query.where(cb.greaterThanOrEqualTo(from.<Date>get("erstellungsDatum"), vonDatum));
+        query.where(cb.greaterThanOrEqualTo(from.<Date>get("erstellungsDatum"), bisDatum));
+        query.where(cb.equal(from.get("art"), art));
+        
+        return em.createQuery(query).getResultList();
     }
     
-    public void getSummeVonMonatBisMonat(Integer vonMonat, Integer bisMonat){
-        List result;
+    public Double[] getSummeVonMonatBisMonat(Date vonDatum, Date bisDatum,TransaktionsArten art ){
         
-       /* Iterator<String> it = result.listIterator();
+        Calendar calendar =Calendar.getInstance();
         
-        while (it.hasNext()){
-            System.out.println(it.toString());
-        }*/
-       
-        /*CriteriaBuilder cb = em.getCriteriaBuilder();
-       
-        CriteriaQuery<Long> query = cb.createQuery(Long.class);
+        calendar.setTime(vonDatum);
+        int fromMonth = calendar.get(Calendar.MONTH) +1 ;
         
-        query.select(query.);
+        calendar.setTime(bisDatum);
+        int toMonth = calendar.get(Calendar.MONTH) +1;
         
-        result = em.createQuery("SELECT i FROM (SELECT MONTH(ERSTELLUNGSDATUM) AS MONAT, SUM(BETRAG) AS SUMMEBETRAG"
-                + "FROM HAUSHALTSBUCH.TRANSAKTION"
-                + "GROUP BY MONTH(ERSTELLUNGSDATUM)"
-                + "ORDER BY MONAT) i where MONAT >= :vonMonat and MONAT <= :bisMonat")
-                .setParameter("vonMonat", vonMonat)
-                .setParameter("bisMonat", bisMonat)
-                .getResultList();*/
+        Double [] werte = new Double[toMonth-fromMonth +1];
+        
+        int i = 0;
+        for (int m = fromMonth; m <= toMonth;m++){
+            
+            List <Transaktion> al = getTransaktionenVonDatumBisDatum(new Date(), WebUtils.parseDate("12.07.2019"), art);
+            
+            Double summe = 0.0;
+            for (Transaktion t:  al){
+                summe = summe + t.getBetrag();
+            }
+            
+            werte [i] = summe;
+            i ++;
+        } 
+        return werte;
     }
     
     //importiert Transaktionen aus einer XML-File
