@@ -88,12 +88,12 @@ public class TransaktionAnlegenServlet extends HttpServlet {
             this.transaktionBean.importiereXML(file, this.benutzerBean.gibAktuellenBenutzer());
 
             // Browser auffordern, die aktuelle Seite neuzuladen
-            session.setAttribute("name", "Hochladen war erfolgreich!");
+            session.setAttribute("name", "Einlesen war erfolgreich!");
             response.sendRedirect(request.getContextPath() + TransaktionAnlegenServlet.URL);
 
         } catch (FileNotFoundException fne) {
 
-            session.setAttribute("name", "Hochladen war nicht erfolgreich!");
+            session.setAttribute("name", "Einlesen war nicht erfolgreich!");
             response.sendRedirect(request.getContextPath() + TransaktionAnlegenServlet.URL);
 
         } finally {

@@ -28,7 +28,7 @@
             </div>
             <br/>
             <div class="row">
-                Hochladen-Status:
+                Einlesen-Status:
             </div>
             <div class="row">
                 <input value="${name}" size="30" placeholder="Bereit" readonly>
