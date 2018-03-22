@@ -19,7 +19,7 @@
         <link rel="stylesheet" href="<c:url value="/css/main.css"/>" />
         <link rel="stylesheet" href="<c:url value="/css/form.css"/>" />
         <link rel="stylesheet" href="<c:url value="/css/transaktion_liste.css"/>" />
-        
+
         <title>Haushaltsbuch</title>
 
         <jsp:invoke fragment="head"/>
@@ -36,12 +36,12 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
-                        
+
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Transaktionen anzeigen</a>
+                            <a class="nav-link" href="/haushaltsbuch/app/transaktionen/">Transaktionen anzeigen</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Transaktion anlegen</a>
+                            <a class="nav-link" href="/haushaltsbuch/app/anlegen/">Transaktion anlegen</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/haushaltsbuch/app/statistik/">Transaktionen auswerten</a>
@@ -52,8 +52,8 @@
                         <li class="nav-item">
                             <a class="nav-link" href="#">Ausloggen</a>
                         </li>
-                        
-                        
+
+
                     </ul>
                 </div>
             </nav>
@@ -68,12 +68,12 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
-        
+
         <jsp:invoke fragment="script"/>
-        
-        
-        
-        
-        
+
+
+
+
+
     </body>
 </html>

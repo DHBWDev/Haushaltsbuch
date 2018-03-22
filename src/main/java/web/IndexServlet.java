@@ -22,8 +22,6 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(urlPatterns = {"/index.html"})
 public class IndexServlet extends HttpServlet {
 
-    @EJB
-    private TransaktionBean transaktionBean;
 
     /**
      * GET-Anfrage: Seite anzeigen
@@ -36,8 +34,6 @@ public class IndexServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
-        
-        this.transaktionBean.importiereXML();
 
         response.sendRedirect(WebUtils.appUrl(request, "/app/transaktionen/"));
     }

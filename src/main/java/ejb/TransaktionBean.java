@@ -12,15 +12,16 @@ import java.util.logging.Logger;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.ejb.Stateless;
-import jpa.Benutzer;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
+import jpa.Benutzer;
 import jpa.Kategorie;
 import jpa.Transaktion;
 import jpa.TransaktionsArten;
+import javax.ejb.EJB;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -32,14 +33,17 @@ import web.WebUtils;
 @Stateless
 public class TransaktionBean extends EntityBean<Transaktion, Long> {
 
+    @EJB
+    KategorieBean kategorieBean;
+
     public TransaktionBean() {
         super(Transaktion.class);
     }
-    
-    public List<Transaktion> suche(String suchtext, Kategorie kategorie){
+
+    public List<Transaktion> suche(String suchtext, Kategorie kategorie) {
         // Hilfsobjekt zum Bauen des Query
         CriteriaBuilder cb = this.em.getCriteriaBuilder();
-        
+
         // SELECT t FROM Angebot t
         CriteriaQuery<Transaktion> query = cb.createQuery(Transaktion.class);
         Root<Transaktion> from = query.from(Transaktion.class);
@@ -47,17 +51,17 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
 
         // ORDER BY erstellungsDatum, erstellungsDatum
         query.orderBy(cb.asc(from.get("erstellungsDatum")), cb.asc(from.get("erstellungsDatum")));
-        
+
         // WHERE t.bezeichnung LIKE :search
         if (suchtext != null && !suchtext.trim().isEmpty()) {
             query.where(cb.like(from.get("bezeichnung"), "%" + suchtext + "%"));
         }
-        
+
         // WHERE t.category = :category
         if (kategorie != null) {
             query.where(cb.equal(from.get("kategorie"), kategorie));
         }
-        
+
         return em.createQuery(query).getResultList();
     }
     
@@ -154,11 +158,10 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
         }
         return werte;
     }
-    
+
     //importiert Transaktionen aus einer XML-File
-    public void importiereXML() {
+    public void importiereXML(File f, Benutzer aktuellerBenutzer) {
         Document doc = null;
-        File f = new File("Transaktionen.xml");
 
         try {
             // Das Dokument erstellen
@@ -170,7 +173,7 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
             Element root = doc.getRootElement();
 
             List<Element> children = root.getChildren();
-    
+
             int i = 0;
             while (i < children.size()) {
                 Transaktion t = new Transaktion();
@@ -181,8 +184,7 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
 
                 Element betrag = children.get(i).getChild("Betrag");
 
-                Element erstellungsDatum = children.get(i).getChild("ErstellungsDatum");
-
+                //Element erstellungsDatum = children.get(i).getChild("ErstellungsDatum");
                 Element art = children.get(i).getChild("Art");
 
                 Element benutzer = children.get(i).getChild("Benutzer");
@@ -193,11 +195,25 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
 
                 //XML-Werte dem Objekte übergeben
                 t.setArt(art.getValue());
-                t.setBenutzer(null);
+                t.setBenutzer(aktuellerBenutzer);
+                t.setBetrag(Double.valueOf(betrag.getValue()));
                 t.setBeschreibung(beschreibung.getValue());
                 t.setBezeichnung(bezeichnung.getValue());
-                t.setErstellungsDatum(null);
-                t.setKategorie(null);
+                t.setErstellungsDatum(new Date(System.currentTimeMillis()));
+
+                //Kategorieprüfung - Ist Kategorie schon vorhanden?
+                //Suche übergebene Kategorie
+                Kategorie aktuelleKategorie = this.kategorieBean.findeMitId(kategorie.getValue());
+                //Wenn ungleich null -> Kategorie vorhanden
+                if (aktuelleKategorie != null) {
+                    t.setKategorie(aktuelleKategorie);
+                } else {
+                    //Wenn null -> neue Kategorie anlegen
+                    //String bezeichnung, String art, Benutzer benutzer
+                    aktuelleKategorie = new Kategorie(kategorie.getValue(), art.getValue(), aktuellerBenutzer);
+                    this.kategorieBean.speichernNeu(aktuelleKategorie);
+                    t.setKategorie(aktuelleKategorie);
+                }
 
                 this.speichernNeu(t);
 
