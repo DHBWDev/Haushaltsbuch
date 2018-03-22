@@ -27,6 +27,9 @@ import jpa.TransaktionsArten;
         
 @WebServlet(urlPatterns = {"/app/statistik/"})
 public class TransaktionStatistikServlet extends HttpServlet {
+    
+    @EJB
+    TransaktionBean transaktionBean;
 
     public String erzeugeMonatsdaten(String titel, String farbe, String[] monate, Double[] zahlen) {
 
@@ -57,9 +60,27 @@ public class TransaktionStatistikServlet extends HttpServlet {
         return data1.toString();
     }
 
-    @EJB
-    TransaktionBean transaktionBean;
-    
+    public String erzeugeKategoriedaten(String titel, String[] farbe, String[] monate, Double[] zahlen) {
+
+        JSONObject data1 = new JSONObject();
+
+        JSONObject dataset = new JSONObject();
+        dataset.put("label", titel);
+
+        dataset.put("backgroundColor", farbe);
+
+        dataset.put("data", zahlen);
+
+        JSONArray array = new JSONArray();
+
+        array.put(dataset);
+
+        data1.put("datasets", array);
+        data1.put("labels", monate);
+
+        return data1.toString();
+    }
+
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -93,12 +114,26 @@ public class TransaktionStatistikServlet extends HttpServlet {
                 new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"},
                 werte)
         );
-        
+
         request.setAttribute("monatseinnahmen", erzeugeMonatsdaten(
                 "Monatseinnahmen",
                 "gruen",
                 new String[]{"Januar", "Februar", "März"},
                 new Double []{0.0,0.0,0.0})
+        );
+
+        request.setAttribute("einnahmekategorien", erzeugeKategoriedaten(
+                "Einnahmekategorien",
+                new String[]{"#7CFC00", "#C0FF3E", "#00FF7F", "#00EE00", "#008B45", "#BCEE68", "#7CCD7C", "#00CD00"},
+                new String[]{"Dividende", "Nebenjob", "Prostitution"},
+                new Double[]{10.3, 40.9, 200.0})
+        );
+        
+        request.setAttribute("ausgabekategorien", erzeugeKategoriedaten(
+                "Ausgabekategorien",
+                new String[]{"#FF0000", "#FF7256", "#CD0000", "#EE4000", "#FF4040", "#FF3030", "#FF6A6A", "#8B2323"},
+                new String[]{"Benzin", "Essen & Trinken", "Prostitution"},
+                new Double[]{10.3, 40.9, 200.0})
         );
 
         // Anfrage an die JSP weiterleiten

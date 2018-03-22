@@ -96,20 +96,9 @@
             var ctx = document.getElementById('Kategorie_aus').getContext('2d');
             var myDoughnutChart = new Chart(ctx, {
                 type: 'doughnut',
-                data: {
-                    datasets: [{
-                            data: [10, 20, 30]
-                            
-                        }],
-
-                    // These labels appear in the legend and in the tooltips when hovering different arcs
-                    labels: [
-                        'Freizeit',
-                        'Benzin',
-                        'Essen und Trinken'
-                    ]
-
-                },
+                data: 
+                      ${ausgabekategorien} 
+                ,
                 options: {}
             });
         </script>
@@ -119,20 +108,11 @@
             debugger;
             var myDoughnutChart = new Chart(ctx, {
                 type: 'doughnut',
-                data: {
-                    datasets: [{
-                            data: [10, 20, 30]
-                            
-                        }],
+                data: 
+                    
+                    ${einnahmekategorien}
 
-                    // These labels appear in the legend and in the tooltips when hovering different arcs
-                    labels: [
-                        'Dividende',
-                        'Nebenjob',
-                        'Gehalt'
-                    ]
-
-                },
+                ,
                 options: {}
             });
         </script>
