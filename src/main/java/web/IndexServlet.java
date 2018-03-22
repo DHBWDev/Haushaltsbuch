@@ -5,9 +5,7 @@
  */
 package web;
 
-import ejb.TransaktionBean;
 import java.io.IOException;
-import javax.ejb.*;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
