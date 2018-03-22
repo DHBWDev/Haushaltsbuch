@@ -7,7 +7,9 @@
     <jsp:attribute name="content">
 
         <div class="container">
-
+            
+            <div>${test}</div>
+            
             <div class="row">
 
                 <h3>Statistiken</h3>

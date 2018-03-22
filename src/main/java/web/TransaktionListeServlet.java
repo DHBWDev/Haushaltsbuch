@@ -8,8 +8,15 @@ package web;
 import ejb.KategorieBean;
 import ejb.TransaktionBean;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Iterator;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -30,6 +37,9 @@ public class TransaktionListeServlet extends HttpServlet {
     
     @EJB
     TransaktionBean transaktionBean;
+    
+    @PersistenceContext
+        EntityManager em;
     
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -55,10 +65,7 @@ public class TransaktionListeServlet extends HttpServlet {
        
         List<Transaktion> transaktionen = this.transaktionBean.suche(suchtext, kategorie);
         request.setAttribute("transaktionen", transaktionen);
-        
-        //transaktionBean.getSummeVonMonatBisMonat(1, 2);
-       
-       
+      
         // Anfrage an die JSP weiterleiten
         request.getRequestDispatcher("/WEB-INF/app/transaktion_liste.jsp").forward(request, response);
     }

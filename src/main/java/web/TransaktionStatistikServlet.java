@@ -5,20 +5,31 @@
  */
 package web;
 
+import ejb.TransaktionBean;
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.json.*;
+import jpa.TransaktionsArten;
 
 /**
  *
  * @author Fabio Kraemer
  */
+
+
+        
 @WebServlet(urlPatterns = {"/app/statistik/"})
 public class TransaktionStatistikServlet extends HttpServlet {
+    
+    @EJB
+    TransaktionBean transaktionBean;
 
     public String erzeugeMonatsdaten(String titel, String farbe, String[] monate, Double[] zahlen) {
 
@@ -73,20 +84,42 @@ public class TransaktionStatistikServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        
+       
+        
+        Double [] werte = transaktionBean.getSummeLastYear(TransaktionsArten.Ausgabe);
+        String test = "adajdjlj " ;
+        
+        if (werte != null) {
+            for (int i = 0; i < werte.length;  i++){
+                if (werte[i] != null) {
+                    test = test + Double.toString(werte[i]) + ", ";
+                }else {
+                    test = test + "null, ";
+                }
+            }
+            request.setAttribute("test", test);
+        }else {
+            request.setAttribute("test", "leer");
+        }
+        
+        request.setAttribute("test", test);
+        
+        
+        
         //Variablen an das JSP weiterleiten
         request.setAttribute("monatsausgaben", erzeugeMonatsdaten(
                 "Monatsausgaben",
                 "rot",
-                new String[]{"Januar", "Februar", "März"},
-                new Double[]{10.3, 40.9, 20.0})
+                new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"},
+                werte)
         );
 
         request.setAttribute("monatseinnahmen", erzeugeMonatsdaten(
                 "Monatseinnahmen",
                 "gruen",
                 new String[]{"Januar", "Februar", "März"},
-                new Double[]{10.3, 40.9, 20.0})
+                new Double []{0.0,0.0,0.0})
         );
 
         request.setAttribute("einnahmekategorien", erzeugeKategoriedaten(
