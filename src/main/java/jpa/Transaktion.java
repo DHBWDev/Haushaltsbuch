@@ -34,7 +34,7 @@ public class Transaktion implements Serializable {
     
     //@NotNull(message = "Die Art darf nicht leer sein")  
     private String art;
-    
+   
     @ManyToOne
     private Benutzer benutzer = null;
     

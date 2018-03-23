@@ -52,7 +52,7 @@
                     <c:forEach items="${transaktionen}" var="transaktion">
                         <tr>
                             <td>
-                                <fmt:formatDate pattern = "HH:mm dd.MM.yyyy" value = "${transaktion.erstellungsDatum}"/>
+                                <fmt:formatDate pattern = "dd.MM.yyyy" value = "${transaktion.erstellungsDatum}"/>
                             </td>
                             <td>
                                 <c:out value="${transaktion.bezeichnung}"/>

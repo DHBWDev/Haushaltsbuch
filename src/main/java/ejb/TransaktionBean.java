@@ -154,7 +154,7 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
             //im zweiten Jahr: Jahresanfang bis aktueller Monat
             if (currentYear == year){
                 fromMonth = 1;
-                toMonth = currentMonth; 
+                toMonth = currentMonth;
             }
             System.out.print("currentYear " + Integer.toString(currentYear));
             System.out.print("Year " + Integer.toString(year));
@@ -171,7 +171,7 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
                 //Setzen des Monates und des Jahres für den letzten des Monates
                 cal.set(year, month-1, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
                 dateTo = cal.getTime();
-                
+
                 System.out.print("month " + Integer.toString(month));
                 System.out.print("dateFrom " + dateFrom.toString());
                 System.out.print("dateTo " + dateTo.toString());
@@ -196,7 +196,7 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
         return summe;
     }
 
-    //importiert Transaktionen aus einer XML-File
+    //Methode zum Import von Transaktionen aus einer XML-File
     public void importiereXML(File f, Benutzer aktuellerBenutzer) {
         Document doc = null;
 
@@ -221,11 +221,12 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
 
                 Element betrag = children.get(i).getChild("Betrag");
 
-                //Element erstellungsDatum = children.get(i).getChild("ErstellungsDatum");
+                Element erstellungsDatum = children.get(i).getChild("ErstellungsDatum");
+
                 Element art = children.get(i).getChild("Art");
 
-                Element benutzer = children.get(i).getChild("Benutzer");
-
+                //wird nicht benötigt
+                //Element benutzer = children.get(i).getChild("Benutzer");
                 //Wenn Kategorie noch nicht vorhanden, automatisch anlegen
                 //Kategorie mitgeben welche Art
                 Element kategorie = children.get(i).getChild("Kategorie");
@@ -236,7 +237,17 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
                 t.setBetrag(Double.valueOf(betrag.getValue()));
                 t.setBeschreibung(beschreibung.getValue());
                 t.setBezeichnung(bezeichnung.getValue());
-                t.setErstellungsDatum(new Date(System.currentTimeMillis()));
+               
+    
+                 //Datum anlegen
+                DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+                Date startDate = new Date();
+                try {
+                    startDate = df.parse(erstellungsDatum.getValue());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                t.setErstellungsDatum(startDate);
 
                 //Kategorieprüfung - Ist Kategorie schon vorhanden?
                 //Suche übergebene Kategorie
