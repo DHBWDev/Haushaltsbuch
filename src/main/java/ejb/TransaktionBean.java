@@ -1,22 +1,13 @@
 package ejb;
 
 import java.io.*;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.servlet.*;
-import javax.servlet.http.*;
 import javax.ejb.Stateless;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
+
 import jpa.Benutzer;
 import jpa.Kategorie;
 import jpa.Transaktion;
@@ -28,13 +19,15 @@ import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.XMLOutputter;
-import web.WebUtils;
 
 @Stateless
 public class TransaktionBean extends EntityBean<Transaktion, Long> {
 
     @EJB
     KategorieBean kategorieBean;
+    
+    @EJB
+    BenutzerBean benutzerBean;
 
     public TransaktionBean() {
         super(Transaktion.class);
@@ -66,59 +59,99 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
     }
     
     public List<Transaktion> getTransaktionenVonDatumBisDatum(Date vonDatum, Date bisDatum, TransaktionsArten art){
-                // Hilfsobjekt zum Bauen des Query
-                /*   CriteriaBuilder cb = this.em.getCriteriaBuilder();
-                
-                // SELECT t FROM Angebot t
-                CriteriaQuery<Transaktion> query = cb.createQuery(Transaktion.class);
-                Root<Transaktion> from = query.from(Transaktion.class);
-                query.select(from);
-                
-                // ORDER BY erstellungsDatum, erstellungsDatum
-                query.orderBy(cb.asc(from.get("erstellungsDatum")), cb.asc(from.get("erstellungsDatum")));
-                
-                query.where(cb.lessThanOrEqualTo(from.<Date>get("erstellungsDatum"), bisDatum));
-                query.where(cb.greaterThanOrEqualTo(from.<Date>get("erstellungsDatum"), vonDatum));
-                
-                
-                query.where(cb.equal(from.get("art"), art));*/
-                
         return em.createQuery("SELECT t FROM Transaktion t"
-        + " WHERE t.art = :art"
+        + " WHERE (t.benutzer = :benutzer)"
+        + " AND (t.art = :art)"
         + " AND (t.erstellungsDatum >= :vonDatum) AND (t.erstellungsDatum <= :bisDatum)")
+        .setParameter("benutzer", benutzerBean.gibAktuellenBenutzer())
         .setParameter("art", art.toString())
         .setParameter("vonDatum", vonDatum)
         .setParameter("bisDatum", bisDatum)
         .getResultList();
-        
-        //return em.createQuery(query).getResultList();
     }
     
-    public Double[] getSummeLastYear(TransaktionsArten art ){
+    public List<Transaktion> getTransaktionenWithCategory(Kategorie kategorie, TransaktionsArten art){
         
-        Calendar calendar =Calendar.getInstance();
+        GregorianCalendar cal = new GregorianCalendar();
         
-        calendar.setTime(new Date());
+        cal.setTime(new Date());
         //heutiger Monat
-        int currentMonth = calendar.get(Calendar.MONTH) +1 ;
+        int currentMonth = cal.get(Calendar.MONTH);
         //heutiges Jahr
-        int currentYear = calendar.get(Calendar.YEAR);
+        int currentYear = cal.get(Calendar.YEAR);
         
-        Double [] werte = new Double[12];
+        System.out.println("Monat " + Integer.toString(currentMonth) + "Jahr " + Integer.toString(currentYear));
         
+        cal.set(currentYear -1 ,currentMonth +1 , 1);
+        Date fromDate = cal.getTime();
+        
+        System.out.println("fromDate " + fromDate);
+        
+        cal.set(currentYear,currentMonth, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+        Date toDate = cal.getTime();
+        
+        System.out.println("fromDate " + toDate);
+        
+        return em.createQuery("SELECT t FROM Transaktion t"
+            + " WHERE (t.benutzer = :benutzer)"
+            + " AND (t.art = :art)"
+            + " AND (t.kategorie = :kategorie)"
+            + " AND (t.erstellungsDatum >= :vonDatum) AND (t.erstellungsDatum <= :bisDatum)")
+            .setParameter("benutzer", benutzerBean.gibAktuellenBenutzer())
+            .setParameter("kategorie", kategorie)
+            .setParameter("vonDatum", fromDate)
+            .setParameter("bisDatum", toDate)
+            .setParameter("art", art.getLabel())
+            .getResultList(); 
+    }
+    
+    public Object [][] getSummeCategoryLastYear(TransaktionsArten art){
+        
+        List<Kategorie> kategorien = kategorieBean.findeAlle(art);
+        Object [][] result = new Object [kategorien.size()][2];
+        
+        System.out.println("Anzahl Kategorien " + Integer.toString(kategorien.size()));
+       
+        int i = 0;
+        for (Kategorie kategorie : kategorien) {
+            result [i][0] = kategorie.getBezeichnung();
+            System.out.println("Bezeichnung " + kategorie.getBezeichnung());
+            
+            result [i][1] = summiereTransaktionen(getTransaktionenWithCategory(kategorie, art));
+            System.out.println("Summe " + Double.toString((Double)result [i][1]));
+            
+            i = i +1;
+        }
+        
+        return result;
+    }
+    
+    public Object[][] getSummeLastYear(TransaktionsArten art ){
+        GregorianCalendar cal = new GregorianCalendar();
+        
+        cal.setTime(new Date());
+        //heutiger Monat
+        int currentMonth = cal.get(Calendar.MONTH) +1 ;
+        //heutiges Jahr
+        int currentYear = cal.get(Calendar.YEAR);
+        
+        //Array für die Beträge der einzelnen Monate
+        Object [][] result= new Object[12][2];
+   
         int fromMonth, toMonth;
         List <Transaktion> al;
-        GregorianCalendar cal = new GregorianCalendar();
+        
         int i = 0;
         Date dateFrom, dateTo;
         
+        //Schleife über die Jahre
         for (int year = currentYear-1; year <= currentYear; year ++){
             
+            //im ersten Jahr: aktueller Monat +1 bis Jahresende
             fromMonth = currentMonth+1;
             toMonth = 12;
-                
-            
-            
+           
+            //im zweiten Jahr: Jahresanfang bis aktueller Monat
             if (currentYear == year){
                 fromMonth = 1;
                 toMonth = currentMonth; 
@@ -127,36 +160,40 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
             System.out.print("Year " + Integer.toString(year));
             System.out.print("fromMonth " + Integer.toString(fromMonth));
             System.out.print("toMonth " + Integer.toString(toMonth));
-           
             
-            
+            //Schleife über die Monate
             for (int month = fromMonth; month <= toMonth; month++){
                 
+                //Setzen des Monates und des Jahres für den ersten des Monates
                 cal.set(year, month-1, 1);
                 dateFrom = cal.getTime();
                 
+                //Setzen des Monates und des Jahres für den letzten des Monates
                 cal.set(year, month-1, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
                 dateTo = cal.getTime();
                 
                 System.out.print("month " + Integer.toString(month));
                 System.out.print("dateFrom " + dateFrom.toString());
                 System.out.print("dateTo " + dateTo.toString());
-                
-                al = getTransaktionenVonDatumBisDatum(dateFrom, dateTo, art);
-            
-                Double summe = 0.0;
-                for (Transaktion t:  al){
-                    summe = summe + t.getBetrag();
-                    System.out.print("Summe " + summe);
-                }
-                werte[i] = summe;
-                System.out.print("wert " + Double.toString(werte[i]));
+                    
+                result[i][0] = new SimpleDateFormat("MMMM", Locale.GERMAN).format(cal.getTime());
+                result[i][1] = summiereTransaktionen(getTransaktionenVonDatumBisDatum(dateFrom, dateTo, art));
+    
+                System.out.print("wert " + Double.toString((Double) result[i][1]));
                 i = i +1;
-                
-                
             }
         }
-        return werte;
+        return result;
+    }
+    
+    public double summiereTransaktionen(List<Transaktion> transaktionen){
+        Double summe = 0.0;
+        for (Transaktion t:  transaktionen){
+            summe = summe + t.getBetrag();
+            System.out.print("Summe " + summe);
+        }
+        
+        return summe;
     }
 
     //importiert Transaktionen aus einer XML-File

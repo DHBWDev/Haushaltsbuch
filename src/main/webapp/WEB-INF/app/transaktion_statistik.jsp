@@ -84,8 +84,7 @@
                 // The type of chart we want to create
                 type: 'line',
                 // The data for our dataset
-                data:  
-                            ${monatseinnahmen}
+                data: ${monatseinnahmen}
                 ,
                 // Configuration options go here
                 options: {}
@@ -96,20 +95,7 @@
             var ctx = document.getElementById('Kategorie_aus').getContext('2d');
             var myDoughnutChart = new Chart(ctx, {
                 type: 'doughnut',
-                data: {
-                    datasets: [{
-                            data: [10, 20, 30]
-                            
-                        }],
-
-                    // These labels appear in the legend and in the tooltips when hovering different arcs
-                    labels: [
-                        'Freizeit',
-                        'Benzin',
-                        'Essen und Trinken'
-                    ]
-
-                },
+                data: ${ausgabenkategorien},
                 options: {}
             });
         </script>
@@ -119,20 +105,7 @@
             debugger;
             var myDoughnutChart = new Chart(ctx, {
                 type: 'doughnut',
-                data: {
-                    datasets: [{
-                            data: [10, 20, 30]
-                            
-                        }],
-
-                    // These labels appear in the legend and in the tooltips when hovering different arcs
-                    labels: [
-                        'Dividende',
-                        'Nebenjob',
-                        'Gehalt'
-                    ]
-
-                },
+                data: ${einnahmenkategorien},
                 options: {}
             });
         </script>
