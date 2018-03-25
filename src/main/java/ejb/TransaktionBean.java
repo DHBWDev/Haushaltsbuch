@@ -87,59 +87,52 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
             .getResultList();
     }
     
-    //public Object [][] getSummeCategoryLastYear(TransaktionsArten art){
+    //Gibt ein StatistikDaten Objekt mit Name der Kategorie und die Summe der Transaktionen zur Kategorie zurück
     public StatistikDaten getStatistikLastYearPerCategory(TransaktionsArten art){    
         List<Kategorie> kategorien = kategorieBean.findeAlle(art);
+        System.out.println("Anzahl Kategorien " + Integer.toString(kategorien.size()));
         
-        //Object [][] result = new Object [kategorien.size()][2];
         StatistikDaten daten = new StatistikDaten();
         
-        System.out.println("Anzahl Kategorien " + Integer.toString(kategorien.size()));
+        GregorianCalendar cal = new GregorianCalendar();
+        cal.setTime(new Date());
+        //heutiger Monat
+        int currentMonth = cal.get(Calendar.MONTH);
+        //heutiges Jahr
+        int currentYear = cal.get(Calendar.YEAR);
+        
+        System.out.println("Monat " + Integer.toString(currentMonth) + "Jahr " + Integer.toString(currentYear));
+        
+        cal.set(currentYear -1 ,currentMonth +1 , 1);
+        Date fromDate = cal.getTime();
+        
+        System.out.println("fromDate " + fromDate);
+        
+        cal.set(currentYear,currentMonth, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+        Date toDate = cal.getTime();
+        
+        System.out.println("toDate " + toDate);
        
         for (Kategorie kategorie : kategorien) {
             System.out.println("Bezeichnung " + kategorie.getBezeichnung());
-            
-            GregorianCalendar cal = new GregorianCalendar();
-            cal.setTime(new Date());
-            //heutiger Monat
-            int currentMonth = cal.get(Calendar.MONTH);
-            //heutiges Jahr
-            int currentYear = cal.get(Calendar.YEAR);
-        
-            System.out.println("Monat " + Integer.toString(currentMonth) + "Jahr " + Integer.toString(currentYear));
-        
-            cal.set(currentYear -1 ,currentMonth +1 , 1);
-            Date fromDate = cal.getTime();
-        
-            System.out.println("fromDate " + fromDate);
-        
-            cal.set(currentYear,currentMonth, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
-            Date toDate = cal.getTime();
-        
-            System.out.println("fromDate " + toDate);
-        
             daten.setWert(summiereTransaktionen(findeAlle(fromDate, toDate, art, kategorie)), kategorie.getBezeichnung());
         }
         
         return daten;
     }
     
-    //public Object[][] getSummeLastYear(TransaktionsArten art ){
+    //Gibt ein StatistikDaten Objekt mit Name des Monats und die Summe der Transaktionen zum Monat zurück
     public StatistikDaten getStatistikLastYearPerMonth(TransaktionsArten art){  
         GregorianCalendar cal = new GregorianCalendar();
-        
         cal.setTime(new Date());
         //heutiger Monat
         int currentMonth = cal.get(Calendar.MONTH) +1 ;
         //heutiges Jahr
         int currentYear = cal.get(Calendar.YEAR);
         
-        //Array für die Beträge der einzelnen Monate
-        //Object [][] result= new Object[12][2];
         StatistikDaten daten = new StatistikDaten();
    
         int fromMonth, toMonth;
-
         Date dateFrom, dateTo;
         
         //Schleife über die Jahre
