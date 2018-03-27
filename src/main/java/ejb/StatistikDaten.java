@@ -44,6 +44,16 @@ public class StatistikDaten {
             dataset.put("backgroundColor", "rgb(0, 255, 0)");
             dataset.put("borderColor", "rgb(0, 255, 0)");
         }
+        
+        if ("rottoene".equals(this.farbe)) {
+            String[] rottoene = new String[]{"#FF0000", "#FF7256", "#CD0000", "#EE4000", "#FF4040", "#FF3030", "#FF6A6A", "#8B2323"};
+            dataset.put("backgroundColor", rottoene);
+        }
+        
+        if ("gruentoene".equals(this.farbe)) {
+            String[] gruentoene = new String[]{"#7CFC00", "#C0FF3E", "#00FF7F", "#00EE00", "#008B45", "#BCEE68", "#7CCD7C", "#00CD00"};
+            dataset.put("backgroundColor", gruentoene);
+        }
 
         dataset.put("data", this.getArrayWithWerte());
 
