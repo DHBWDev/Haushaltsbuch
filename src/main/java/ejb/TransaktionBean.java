@@ -266,7 +266,13 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
                 Element kategorie = children.get(i).getChild("Kategorie");
 
                 //XML-Werte dem Objekte übergeben
-                t.setArt(art.getValue());
+                if (art.getValue().equals(TransaktionsArten.Ausgabe.getLabel())){
+                    t.setArt(TransaktionsArten.Ausgabe);
+                }
+                if (art.getValue().equals(TransaktionsArten.Einnahme.getLabel())){
+                    t.setArt(TransaktionsArten.Einnahme);
+                }
+                
                 t.setBenutzer(aktuellerBenutzer);
                 t.setBetrag(Double.valueOf(betrag.getValue()));
                 t.setBeschreibung(beschreibung.getValue());

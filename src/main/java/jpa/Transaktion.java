@@ -33,7 +33,7 @@ public class Transaktion implements Serializable {
     private Date erstellungsDatum = new Date();
     
     //@NotNull(message = "Die Art darf nicht leer sein")  
-    private String art;
+    private TransaktionsArten art;
    
     @ManyToOne
     private Benutzer benutzer = null;
@@ -45,7 +45,7 @@ public class Transaktion implements Serializable {
     public Transaktion(){
     }
     
-    public Transaktion(String bezeichnung, String beschreibung, Double betrag, Date erstellungsDatum, String art){
+    public Transaktion(String bezeichnung, String beschreibung, Double betrag, Date erstellungsDatum, TransaktionsArten art){
         this.bezeichnung = bezeichnung;
         this.beschreibung = beschreibung;
         this.betrag = betrag;
@@ -95,11 +95,11 @@ public class Transaktion implements Serializable {
         this.erstellungsDatum = erstellungsDatum;
     }
     
-    public String getArt() {
+    public TransaktionsArten getArt() {
         return art;
     }
     
-    public void setArt(String art) {
+    public void setArt(TransaktionsArten art) {
         this.art = art;
     }
     
