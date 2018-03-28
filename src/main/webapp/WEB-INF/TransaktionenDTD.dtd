@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!--
+    TODO define vocabulary identification
+    PUBLIC ID: -//vendor//vocabulary//EN
+    SYSTEM ID: http://server/path/TransaktionenDTD.dtd
+
+-->
+
+<!--
+    An example how to use this DTD from your XML document:
+
+    <?xml version="1.0"?>
+
+    <!DOCTYPE Transaktionsverzeichnis SYSTEM "TransaktionenDTD.dtd">
+
+    <Transaktionsverzeichnis>
+    ...
+    </Transaktionsverzeichnis>
+-->
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT Transaktionsverzeichnis (Transaktion)*>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT Transaktion (Bezeichnung|Beschreibung|Betrag|ErstellungsDatum|Art|Kategorie)*>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT Bezeichnung (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT Beschreibung (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT Betrag (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT ErstellungsDatum (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT Art (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT Kategorie (#PCDATA)>
