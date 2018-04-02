@@ -280,7 +280,9 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
         try {
             // Das Dokument erstellen
             SAXBuilder builder = new SAXBuilder();
+            
             doc = builder.build(f);
+            
             XMLOutputter fmt = new XMLOutputter();
 
             // Wurzelelement ausgeben

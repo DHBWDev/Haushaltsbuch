@@ -52,7 +52,7 @@ public class TransaktionStatistikServlet extends HttpServlet {
        
        
        statistik = this.transaktionBean.getStatistikLastYearPerCategory(TransaktionsArten.Ausgabe);
-       statistik.setFarbe("rot");
+       statistik.setFarbe("rottoene");
        statistik.setTitel("Ausgaben nach Kategorien");
        request.setAttribute("ausgabenkategorien", statistik.erzeugeJson());
        

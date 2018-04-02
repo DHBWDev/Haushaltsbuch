@@ -13,7 +13,7 @@ import javax.persistence.PersistenceContext;
  */
 public abstract class EntityBean<Entity, EntityId> {
 
-    @PersistenceContext()
+    @PersistenceContext
     EntityManager em;
 
     private final Class<Entity> entityClass;
