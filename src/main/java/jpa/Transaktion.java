@@ -2,10 +2,12 @@ package jpa;
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.ColumnResult;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.SqlResultSetMapping;
 import javax.persistence.TableGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -13,6 +15,12 @@ import javax.validation.constraints.NotNull;
 
 
 @Entity
+@SqlResultSetMapping(name = "MonthTransaktionMapping", 
+    columns = {
+        @ColumnResult(name = "SUMME", type = Double.class),
+        @ColumnResult(name = "MONAT", type = Integer.class)
+    }
+)
 public class Transaktion implements Serializable {
 
     @Id

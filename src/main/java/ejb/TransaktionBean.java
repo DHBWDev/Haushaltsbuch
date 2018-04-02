@@ -67,7 +67,7 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
         + " AND (t.art = :art)"
         + " AND (t.erstellungsDatum >= :vonDatum) AND (t.erstellungsDatum <= :bisDatum)")
         .setParameter("benutzer", benutzerBean.gibAktuellenBenutzer())
-        .setParameter("art", art.toString())
+        .setParameter("art", art)
         .setParameter("vonDatum", vonDatum)
         .setParameter("bisDatum", bisDatum)
         .getResultList();
@@ -83,12 +83,13 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
             .setParameter("kategorie", kategorie)
             .setParameter("vonDatum", vonDatum)
             .setParameter("bisDatum", bisDatum)
-            .setParameter("art", art.getLabel())
+            .setParameter("art", art)
             .getResultList();
     }
     
     //Gibt ein StatistikDaten Objekt mit Name der Kategorie und die Summe der Transaktionen zur Kategorie zurück
-    public StatistikDaten getStatistikLastYearPerCategory(TransaktionsArten art){    
+    public StatistikDaten getStatistikLastYearPerCategory(TransaktionsArten art){   
+        System.err.println("TTT");
         List<Kategorie> kategorien = kategorieBean.findeAlle(art);
         System.out.println("Anzahl Kategorien " + Integer.toString(kategorien.size()));
         
@@ -121,10 +122,94 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
         return daten;
     }
     
+    public StatistikDaten getStatistikLastYearPerMonth( TransaktionsArten art, Date date){
+        StatistikDaten sD = new StatistikDaten();
+        
+        GregorianCalendar cal = new GregorianCalendar();
+        
+        //Ermitteln des aktuellen Monates und Jahres
+        cal.setTime(date);
+        int currentMonth = cal.get(Calendar.MONTH);
+        int currentYear = cal.get(Calendar.YEAR);
+        
+        System.out.println("aktueller Monat " + Integer.toString(currentMonth));
+        System.out.println("aktuelles Jahr " + Integer.toString(currentYear));
+        
+        //Es sollen die Werte des letzten Jahres ermittelt werden
+        //Setzen des Monates +1 und Jahres -1 als Anfangsdatum
+        int startMonth = currentMonth +1;
+        int startYear = currentYear -1;
+        
+         //Jahreswechsel
+        if (startMonth >= 12){
+            startMonth = 0;
+            startYear = startYear +1;
+        }
+        cal.set(startYear,startMonth , 1);
+        Date fromDate = cal.getTime();
+        
+        //Enddatum = heutiges Datum
+        Date toDate = date;
+        
+        System.out.println("von Datum " + fromDate);
+        System.out.println("bis Datum " + toDate);
+        System.out.println("SQL Abfrage");
+        
+        //Hier wird eine NativeQuery verwendet, weil SQL Befehle verwendet werden,
+        //die so in JPA nicht vorgesehen sind.
+        List<Object[]> results = em.createNativeQuery("select SUM(t.BETRAG) as SUMME, MONTH(t.ERSTELLUNGSDATUM) as MONAT \n" +
+                "from (select * from HAUSHALTSBUCH.TRANSAKTION t  \n" +
+                "where t.ERSTELLUNGSDATUM >= ?1 AND t.ERSTELLUNGSDATUM <= ?2 AND t.BENUTZER_USERNAME = ?3 AND t.ART = ?4) t group by MONTH(t.ERSTELLUNGSDATUM)\n",
+                "MonthTransaktionMapping")
+                .setParameter(1, fromDate)
+                .setParameter(2, toDate)
+                .setParameter(3, benutzerBean.gibAktuellenBenutzer().getUsername())
+                .setParameter(4, art.ordinal())
+                .getResultList();
+        
+        //Erzeugen eines Double Arrays für die Beträge. Es kann sein, dass in der SQl Abfrage nicht alle Monate repräsentiert werden.
+        //Zum Beispiel wenn es aus einem Monat keine Transaktionen gibt.
+        Double [] d = new Double[12];
+        System.out.println("Zeilen " + results.size());
+        results.stream().forEach((record) ->{
+            System.out.println("Spalten " + record.length);
+            
+            //Der Wert wird genau auf die passende Position im Array gesetzt. - 0 = Januar
+            d[(Integer)record[1]-1] = (Double)record[0];
+            
+            System.out.println("Betrag " + record[0]);
+            System.out.println("Monat " + record[1]);
+        });
+        
+        //Setzen der Statistik Werte. Es soll nicht fix mit dem Januar begonnen werden, 
+        //sondern mit dem aktuellen Monat +1 und aktuelles Jahr -1
+        int month = startMonth;
+        Double wert;
+        for (int i = 1; i <= 12; i++){
+            wert = 0.0;
+            
+            if ( d[month] != null) {
+                wert = d[month]; 
+            } 
+            
+            //Setzen des Statistikwertes
+            cal.set(2000, month, 1);
+            //Speichern der Daten in ein Statistik Objekt
+            sD.setWert(wert, new SimpleDateFormat("MMMM", Locale.GERMAN).format(cal.getTime()));
+            
+            month = month +1;
+            
+            //Jahreswechsel
+            if (month+1 >= 12){
+                month = 0;
+            }
+        }  
+        return sD;
+    }
    
+//<editor-fold defaultstate="collapsed" desc="Alter Code">
     //Gibt ein StatistikDaten Objekt mit Name des Monats und die Summe der Transaktionen zum Monat zurück
-    public StatistikDaten getStatistikLastYearPerMonth(TransaktionsArten art){ 
-        Date [][] intervalle = getMonthAndYearFromTo(new Date(), 12);
+    public StatistikDaten getStatistikLastYearPerMonthOld(TransaktionsArten art){
         
         GregorianCalendar cal = new GregorianCalendar();
         cal.setTime(new Date());
@@ -134,17 +219,17 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
         int currentYear = cal.get(Calendar.YEAR);
         
         StatistikDaten daten = new StatistikDaten();
-   
+        
         int fromMonth, toMonth;
         Date dateFrom, dateTo;
         
         //Schleife über die Jahre
         for (int year = currentYear-1; year <= currentYear; year ++){
-        
+            
             //im ersten Jahr: aktueller Monat +1 bis Jahresende
             fromMonth = currentMonth+1;
             toMonth = 12;
-        
+            
             //im zweiten Jahr: Jahresanfang bis aktueller Monat
             if (currentYear == year){
                 fromMonth = 1;
@@ -154,72 +239,30 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
             System.out.print("Year " + Integer.toString(year));
             System.out.print("fromMonth " + Integer.toString(fromMonth));
             System.out.print("toMonth " + Integer.toString(toMonth));
-        
+            
             //Schleife über die Monate
             for (int month = fromMonth; month <= toMonth; month++){
-        
+                
                 //Setzen des Monates und des Jahres für den ersten des Monates
                 cal.set(year, month-1, 1);
                 dateFrom = cal.getTime();
-        
+                
                 //Setzen des Monates und des Jahres für den letzten des Monates
                 cal.set(year, month-1, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
                 dateTo = cal.getTime();
-        
+                
                 System.out.print("month " + Integer.toString(month));
                 System.out.print("dateFrom " + dateFrom.toString());
                 System.out.print("dateTo " + dateTo.toString());
-        
+                
                 daten.setWert(summiereTransaktionen(findeAlle(dateFrom, dateTo, art)), new SimpleDateFormat("MMMM", Locale.GERMAN).format(cal.getTime()));
             }
         }
         
         return daten;
     }
-    
-    public Date[][] getMonthAndYearFromTo(Date from, Integer months){
-        /*GregorianCalendar cal = new GregorianCalendar();
-        
-        cal.setTime(from);
-        //heutiger Monat,  0 = Januar
-        int fromMonth = cal.get(Calendar.MONTH);
-        //heutiges Jahr
-        int fromYear = cal.get(Calendar.YEAR);
-        
-        Date [][] intervalle = new Date[months][2];
-        
-        Integer i = 0;
-        Integer currentMonth, currentYear;
-        
-        currentMonth = fromMonth +1;
-        currentYear = fromYear -1;
-        
-        while (months <= i){
-            //Setzen des Monates und des Jahres für den ersten des Monates
-            cal.set(currentYear, currentMonth, 1);
-            intervalle[i][0] = cal.getTime();
-            
-            //Setzen des Monates und des Jahres für den letzten des Monates
-            cal.set(currentYear, currentMonth, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
-            intervalle[i][0] = cal.getTime();
-         
-            currentMonth = currentMonth +1;
+//</editor-fold>
 
-            //Jahreswechsel
-            if (currentMonth+1 >= 12){
-                currentMonth = 1;
-                currentYear = currentYear +1;
-            }
-            
-            i = i+1;
-        }
-        
-        return intervalle;*/
-        
-        return null;
-        
-    }
-    
     public double summiereTransaktionen(List<Transaktion> transaktionen){
         Double summe = 0.0;
         for (Transaktion t:  transaktionen){

@@ -38,16 +38,18 @@ public class TransaktionStatistikServlet extends HttpServlet {
        
        StatistikDaten statistik ;
        
-       statistik = this.transaktionBean.getStatistikLastYearPerMonth(TransaktionsArten.Ausgabe);
+       //statistik = this.transaktionBean.getStatistikLastYearPerMonth(TransaktionsArten.Ausgabe);
+       statistik = this.transaktionBean.getStatistikLastYearPerMonth(TransaktionsArten.Ausgabe, new Date());
        statistik.setFarbe("rot");
        statistik.setTitel("Ausgaben nach Monat");
        request.setAttribute("monatsausgaben", statistik.erzeugeJson());
        
        
-       statistik = this.transaktionBean.getStatistikLastYearPerMonth(TransaktionsArten.Einnahme);
+       statistik = this.transaktionBean.getStatistikLastYearPerMonth(TransaktionsArten.Einnahme, new Date());
        statistik.setFarbe("gruen");
        statistik.setTitel("Einnahmen nach Monat");
        request.setAttribute("monatseinnahmen", statistik.erzeugeJson());
+       
        
        statistik = this.transaktionBean.getStatistikLastYearPerCategory(TransaktionsArten.Ausgabe);
        statistik.setFarbe("rot");
@@ -58,7 +60,6 @@ public class TransaktionStatistikServlet extends HttpServlet {
        statistik.setFarbe("gruen");
        statistik.setTitel("Einnahmen nach Kategorien");
        request.setAttribute("einnahmenkategorien", statistik.erzeugeJson());
-
        
        request.getRequestDispatcher("/WEB-INF/app/transaktion_statistik.jsp").forward(request, response);
     }

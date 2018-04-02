@@ -1,21 +1,111 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Transaktionsverzeichnis>
 	<Transaktion>
-		<Bezeichnung>	Auto tanken</Bezeichnung>
-		<Beschreibung>	Heute hab ich mein Auto getankt</Beschreibung>
-		<Betrag>	50 </Betrag>
-		<ErstellungsDatum> 10.11.2016</ErstellungsDatum>
-		<Art>		Ausgabe</Art>
-		<Benutzer>	Samuel</Benutzer>
-		<Kategorie>	Auto</Kategorie>
+		<Bezeichnung>TEST</Bezeichnung>
+		<Beschreibung>TTTTTT</Beschreibung>
+		<Betrag>50</Betrag>
+		<ErstellungsDatum> 10.01.1999</ErstellungsDatum>
+		<Art>Ausgabe</Art>
+		<Benutzer>Admin</Benutzer>
+		<Kategorie>T</Kategorie>
 	</Transaktion>
 	<Transaktion>
-		<Bezeichnung>	Fahrrad reparieren</Bezeichnung>
-		<Beschreibung>	Fahrrad hatte einen platten Reifen</Beschreibung>
-		<Betrag>	8 </Betrag>
-		<ErstellungsDatum> 15.11.2016</ErstellungsDatum>
-		<Art>		Ausgabe</Art>
-		<Benutzer>	Samuel</Benutzer>
-		<Kategorie>	Sonstiges</Kategorie>
+		<Bezeichnung>TEST</Bezeichnung>
+		<Beschreibung>TTTTTT</Beschreibung>
+		<Betrag>50</Betrag>
+		<ErstellungsDatum> 10.02.1999</ErstellungsDatum>
+		<Art>Ausgabe</Art>
+		<Benutzer>Admin</Benutzer>
+		<Kategorie>T</Kategorie>
+	</Transaktion>
+	<Transaktion>
+		<Bezeichnung>TEST</Bezeichnung>
+		<Beschreibung>TTTTTT</Beschreibung>
+		<Betrag>50</Betrag>
+		<ErstellungsDatum> 10.03.1999</ErstellungsDatum>
+		<Art>Ausgabe</Art>
+		<Benutzer>Admin</Benutzer>
+		<Kategorie>T</Kategorie>
+	</Transaktion>
+	<Transaktion>
+		<Bezeichnung>TEST</Bezeichnung>
+		<Beschreibung>TTTTTT</Beschreibung>
+		<Betrag>50</Betrag>
+		<ErstellungsDatum> 10.04.1999</ErstellungsDatum>
+		<Art>Ausgabe</Art>
+		<Benutzer>Admin</Benutzer>
+		<Kategorie>T</Kategorie>
+	</Transaktion>
+	<Transaktion>
+		<Bezeichnung>TEST</Bezeichnung>
+		<Beschreibung>TTTTTT</Beschreibung>
+		<Betrag>50</Betrag>
+		<ErstellungsDatum> 10.05.1999</ErstellungsDatum>
+		<Art>Ausgabe</Art>
+		<Benutzer>Admin</Benutzer>
+		<Kategorie>T</Kategorie>
+	</Transaktion>
+	<Transaktion>
+		<Bezeichnung>TEST</Bezeichnung>
+		<Beschreibung>TTTTTT</Beschreibung>
+		<Betrag>50</Betrag>
+		<ErstellungsDatum> 10.06.1999</ErstellungsDatum>
+		<Art>Ausgabe</Art>
+		<Benutzer>Admin</Benutzer>
+		<Kategorie>T</Kategorie>
+	</Transaktion>
+	<Transaktion>
+		<Bezeichnung>TEST</Bezeichnung>
+		<Beschreibung>TTTTTT</Beschreibung>
+		<Betrag>50</Betrag>
+		<ErstellungsDatum> 10.07.1999</ErstellungsDatum>
+		<Art>Ausgabe</Art>
+		<Benutzer>Admin</Benutzer>
+		<Kategorie>T</Kategorie>
+	</Transaktion>
+	<Transaktion>
+		<Bezeichnung>TEST</Bezeichnung>
+		<Beschreibung>TTTTTT</Beschreibung>
+		<Betrag>50</Betrag>
+		<ErstellungsDatum> 10.08.1999</ErstellungsDatum>
+		<Art>Ausgabe</Art>
+		<Benutzer>Admin</Benutzer>
+		<Kategorie>T</Kategorie>
+	</Transaktion>
+	<Transaktion>
+		<Bezeichnung>TEST</Bezeichnung>
+		<Beschreibung>TTTTTT</Beschreibung>
+		<Betrag>50</Betrag>
+		<ErstellungsDatum> 10.09.1999</ErstellungsDatum>
+		<Art>Ausgabe</Art>
+		<Benutzer>Admin</Benutzer>
+		<Kategorie>T</Kategorie>
+	</Transaktion>
+	<Transaktion>
+		<Bezeichnung>TEST</Bezeichnung>
+		<Beschreibung>TTTTTT</Beschreibung>
+		<Betrag>50</Betrag>
+		<ErstellungsDatum> 10.10.1999</ErstellungsDatum>
+		<Art>Ausgabe</Art>
+		<Benutzer>Admin</Benutzer>
+		<Kategorie>T</Kategorie>
+	</Transaktion>
+	<Transaktion>
+		<Bezeichnung>TEST</Bezeichnung>
+		<Beschreibung>TTTTTT</Beschreibung>
+		<Betrag>50</Betrag>
+		<ErstellungsDatum> 10.11.1999</ErstellungsDatum>
+		<Art>Ausgabe</Art>
+		<Benutzer>Admin</Benutzer>
+		<Kategorie>T</Kategorie>
+	</Transaktion>
+	<Transaktion>
+		<Bezeichnung>TEST</Bezeichnung>
+		<Beschreibung>TTTTTT</Beschreibung>
+		<Betrag>50</Betrag>
+		<ErstellungsDatum> 10.12.1999</ErstellungsDatum>
+		<Art>Ausgabe</Art>
+		<Benutzer>Admin</Benutzer>
+		<Kategorie>T</Kategorie>
 	</Transaktion>
 </Transaktionsverzeichnis> 

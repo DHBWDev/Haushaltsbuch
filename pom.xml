@@ -12,11 +12,8 @@
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <glassfish.embedded-static-shell.jar>C:/Program Files/glassfish-4.1.1/glassfish/lib/embedded/glassfish-embedded-static-shell.jar</glassfish.embedded-static-shell.jar>
-    </properties>
-    
+    </properties>  
     <dependencies>
-
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>eclipselink</artifactId>
@@ -70,11 +67,16 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.glassfish.main.extras</groupId>
-            <artifactId>glassfish-embedded-static-shell</artifactId>
-            <version>4.1.1</version>
-            <scope>system</scope>
-            <systemPath>${glassfish.embedded-static-shell.jar}</systemPath>
+            <groupId>org.glassfish.extras</groupId>
+            <artifactId>glassfish-embedded-all</artifactId>
+            <version>3.1</version>
+            <scope>provided</scope>
+	</dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>1.9.5</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
     <build>
@@ -126,5 +128,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
