@@ -27,6 +27,9 @@
                     <button class="icon-login" type="submit">
                         Einloggen
                     </button>
+                    <button class="icon-login" >
+                        Neu registrieren
+                    </button>
                 </div>
             </form>
         </div>
