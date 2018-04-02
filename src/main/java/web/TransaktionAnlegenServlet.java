@@ -17,10 +17,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.scene.control.Separator;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -95,9 +93,9 @@ public class TransaktionAnlegenServlet extends HttpServlet {
             }
             //Validierung der XML-Datei
             //returns true or false
-            if(validiereXML(xmlFile, path) == false){
-                throw new JDOMException();
-            }
+            /* if (validiereXML(xmlFile, path) == false) {
+            throw new JDOMException();
+            }*/
 
             //XML-Datei in DB importieren
             this.transaktionBean.importiereXML(xmlFile, this.benutzerBean.gibAktuellenBenutzer());
@@ -110,11 +108,10 @@ public class TransaktionAnlegenServlet extends HttpServlet {
             session.setAttribute("name", "XML nicht gefunden!");
             response.sendRedirect(request.getContextPath() + TransaktionAnlegenServlet.URL);
 
-        } catch (JDOMException ex) {
-            session.setAttribute("name", "Keine gültige XML!");
-            response.sendRedirect(request.getContextPath() + TransaktionAnlegenServlet.URL);
-        }
-            finally {
+        } /*catch (JDOMException ex) {
+        session.setAttribute("name", "Keine gültige XML!");
+        response.sendRedirect(request.getContextPath() + TransaktionAnlegenServlet.URL);
+        } */ finally {
 
             if (out != null) {
                 out.close();
