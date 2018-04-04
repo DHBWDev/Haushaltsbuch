@@ -1,0 +1,8 @@
+----------------------------------------------------------------
+2018-04-04 16:30:05.773 GMT:
+Booten von Derby Version The Apache Software Foundation - Apache Derby - 10.6.2.1 - (999685): Instanz a816c00e-0162-917e-7146-0000175e6060
+für Datenbankverzeichnis C:\Users\Fabio Kraemer\AppData\Local\Temp\gfembed7190486465959241122tmp\lib\databases\embedded_default   mit Klassenladeprogrammn sun.misc.Launcher$AppClassLoader@6bc7c054
+
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_102-b14
+Das Ladeprogramm für Datenbankklassen wurde gestartet - derby.database.classpath=''

@@ -24,8 +24,13 @@ import javax.validation.constraints.NotNull;
 public class Transaktion implements Serializable {
 
     @Id
-    @GeneratedValue(generator = "transaktion_ids")
-    @TableGenerator(name = "transaktion_ids", initialValue = 0, allocationSize = 1)
+    //Die Sequenz Tabelle, die für die Transaktion Ids angelegt werden, führt bei
+    //der Erzeugung eines Embedded Containers zu Fehler 
+    
+    //@GeneratedValue(generator = "transaktion_ids")
+    //@TableGenerator(name = "transaktion_ids", initialValue = 0, allocationSize = 1)
+    
+    @GeneratedValue
     private long id;
    
     //@NotNull(message = "Die Bezeichnung darf nicht leer sein.")
@@ -112,13 +117,13 @@ public class Transaktion implements Serializable {
     }
     
     public Benutzer getBenutzer() {
-        return benutzer;
+    return benutzer;
     }
     
     public void setBenutzer(Benutzer benutzer) {
-        this.benutzer = benutzer;
+    this.benutzer = benutzer;
     }
-    
+ 
     public Kategorie getKategorie() {
         return kategorie;
     }

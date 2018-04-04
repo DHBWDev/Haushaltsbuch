@@ -48,12 +48,14 @@
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
+        <!-- Embedded GlassFish für JUnit -->
         <dependency>
             <groupId>org.glassfish.extras</groupId>
             <artifactId>glassfish-embedded-all</artifactId>
-            <version>3.1</version>
-            <scope>provided</scope>
-	</dependency>
+            <version>3.1.1</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- ... -->
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-all</artifactId>

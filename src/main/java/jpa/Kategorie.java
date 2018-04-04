@@ -23,8 +23,8 @@ public class Kategorie implements Serializable {
     @NotNull(message = "Die Kategorieart darf nicht leer sein")
     private String art = "";
     
-    @ManyToOne
-    private Benutzer benutzer = null;
+    @ManyToOne(targetEntity=Benutzer.class)
+    Benutzer benutzer = null;
     
     //muss optional true sein?
     @OneToMany(mappedBy = "kategorie", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
@@ -58,14 +58,14 @@ public class Kategorie implements Serializable {
         this.art = art;
     }
     
-    public Benutzer getBenutzer() {
-        return benutzer;
+    /* public Benutzer getBenutzer() {
+    return benutzer;
     }
     
     public void setBenutzer(Benutzer benutzer) {
-        this.benutzer = benutzer;
+    this.benutzer = benutzer;
     }
-    
+    */
     public List<Transaktion> getTransaktionen() {
         return transaktionen;
     }

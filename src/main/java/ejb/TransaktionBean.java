@@ -169,17 +169,33 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
         
         //Erzeugen eines Double Arrays für die Beträge. Es kann sein, dass in der SQl Abfrage nicht alle Monate repräsentiert werden.
         //Zum Beispiel wenn es aus einem Monat keine Transaktionen gibt.
+        
         Double [] d = new Double[12];
         System.out.println("Zeilen " + results.size());
+        //Die sogenannten Lampda Expressions aus JAVA 8 machen bei der Erzeugung eines Embedded Container
+        //Ärger --> IndexOutOfBoundException 
+        
+        /*
         results.stream().forEach((record) ->{
+        System.out.println("Spalten " + record.length);
+        
+        //Der Wert wird genau auf die passende Position im Array gesetzt. - 0 = Januar
+        d[(Integer)record[1]-1] = (Double)record[0];
+        
+        System.out.println("Betrag " + record[0]);
+        System.out.println("Monat " + record[1]);
+        });*/
+        
+        for ( Iterator i = results.iterator(); i.hasNext(); ) {
+            Object[] record = (Object [])i.next();
             System.out.println("Spalten " + record.length);
-            
+        
             //Der Wert wird genau auf die passende Position im Array gesetzt. - 0 = Januar
             d[(Integer)record[1]-1] = (Double)record[0];
-            
+        
             System.out.println("Betrag " + record[0]);
             System.out.println("Monat " + record[1]);
-        });
+        }
         
         //Setzen der Statistik Werte. Es soll nicht fix mit dem Januar begonnen werden, 
         //sondern mit dem aktuellen Monat +1 und aktuelles Jahr -1
