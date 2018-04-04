@@ -89,7 +89,6 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
     
     //Gibt ein StatistikDaten Objekt mit Name der Kategorie und die Summe der Transaktionen zur Kategorie zurück
     public StatistikDaten getStatistikLastYearPerCategory(TransaktionsArten art){   
-        System.err.println("TTT");
         List<Kategorie> kategorien = kategorieBean.findeAlle(art);
         System.out.println("Anzahl Kategorien " + Integer.toString(kategorien.size()));
         
@@ -359,7 +358,16 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
                 } else {
                     //Wenn null -> neue Kategorie anlegen
                     //String bezeichnung, String art, Benutzer benutzer
-                    aktuelleKategorie = new Kategorie(kategorie.getValue(), art.getValue(), aktuellerBenutzer);
+                    
+                    TransaktionsArten tArt = null;
+                    if (art.getValue().equals(TransaktionsArten.Ausgabe.getLabel())){
+                        tArt = TransaktionsArten.Ausgabe;
+                    }
+                    if (art.getValue().equals(TransaktionsArten.Einnahme.getLabel())){
+                        tArt = TransaktionsArten.Einnahme;
+                    }
+                
+                    aktuelleKategorie = new Kategorie(kategorie.getValue(),tArt, aktuellerBenutzer);
                     this.kategorieBean.speichernNeu(aktuelleKategorie);
                     t.setKategorie(aktuelleKategorie);
                 }

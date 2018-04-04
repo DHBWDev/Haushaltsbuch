@@ -16,9 +16,12 @@ import java.util.List;
 import java.util.Map;
 import javax.ejb.embeddable.EJBContainer;
 import javax.naming.NamingException;
+import jpa.Benutzer;
+import jpa.Kategorie;
 import jpa.Transaktion;
 import jpa.TransaktionsArten;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -75,15 +78,31 @@ public class TransaktionBeanTest {
         // Manueller JNDI-Lookup. Das ist, was @EJB für uns im Hintergrund
         // macht. Jedoch können wir @EJB in einer Testklasse nicht verwenden.
         transaktionBean = (TransaktionBean) container.getContext().lookup("java:global/classes/TransaktionBean");
+
+        /*        //Testdaten erzeugen
+        transaktionBean.speichernNeu(new Transaktion("T", "T", 100.00, new Date(), TransaktionsArten.Ausgabe, null));
+        transaktionBean.speichernNeu(new Transaktion("A", "T", 200.00, new Date(), TransaktionsArten.Ausgabe, null));
+        transaktionBean.speichernNeu(new Transaktion("T", "T", 500.00, new Date(), TransaktionsArten.Ausgabe, null));*/
     }
     
     @Test
-    public void test() {
+    public void SummiereTransaktionen_Test() {
         List <Transaktion> t = new ArrayList();
         
-        t.add(new Transaktion("", "", 100.00, new Date(), TransaktionsArten.Ausgabe));
+        t.add(new Transaktion("", "", 100.00, new Date(), TransaktionsArten.Ausgabe,null));
+        t.add(new Transaktion("", "", 100.00, new Date(), TransaktionsArten.Ausgabe,null));
         
         Double result = transaktionBean.summiereTransaktionen(t);
-        assertEquals(result, 100.00,1.00);
+        assertEquals(result, 200.00,1.00);
     }
+    
+    /*    @Test
+    public void getStatistikLastYearPerMonth_Test(){
+    StatistikDaten sd = transaktionBean.getStatistikLastYearPerMonth(TransaktionsArten.Ausgabe, new Date());
+    Double [] result = {0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00, 0.00,800.00} ;
+    Double [] d = sd.getArrayWithWerte();
+    
+    Assert.assertArrayEquals(result, d);
+    }*/
+    
 }

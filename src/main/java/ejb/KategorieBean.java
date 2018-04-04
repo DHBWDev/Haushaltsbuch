@@ -18,7 +18,7 @@ public class KategorieBean extends EntityBean<Kategorie, String> {
  
     public List<Kategorie> findeAlle(TransaktionsArten art){
         String select = "SELECT k FROM Kategorie k WHERE k.art = :art";
-        return em.createQuery(select).setParameter("art", art.getLabel()).getResultList();
+        return em.createQuery(select).setParameter("art", art).getResultList();
     }
     public String Test(){
         return "test";

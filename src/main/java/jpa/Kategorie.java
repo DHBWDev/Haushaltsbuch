@@ -21,7 +21,7 @@ public class Kategorie implements Serializable {
     
     //Einnahmen- oder Ausgabenkategorie
     @NotNull(message = "Die Kategorieart darf nicht leer sein")
-    private String art = "";
+    private TransaktionsArten art;
     
     @ManyToOne(targetEntity=Benutzer.class)
     Benutzer benutzer = null;
@@ -34,7 +34,7 @@ public class Kategorie implements Serializable {
     public Kategorie () {
     }
     
-    public Kategorie (String bezeichnung, String art, Benutzer benutzer){
+    public Kategorie (String bezeichnung, TransaktionsArten art, Benutzer benutzer){
         this.bezeichnung = bezeichnung;
         this.art = art;
         this.benutzer = benutzer;
@@ -50,11 +50,11 @@ public class Kategorie implements Serializable {
         this.bezeichnung = bezeichnung;
     }
     
-    public String getArt() {
+    public TransaktionsArten getArt() {
         return art;
     }
     
-    public void setArt(String art) {
+    public void setArt(TransaktionsArten art) {
         this.art = art;
     }
     

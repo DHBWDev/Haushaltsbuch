@@ -58,12 +58,13 @@ public class Transaktion implements Serializable {
     public Transaktion(){
     }
     
-    public Transaktion(String bezeichnung, String beschreibung, Double betrag, Date erstellungsDatum, TransaktionsArten art){
+    public Transaktion(String bezeichnung, String beschreibung, Double betrag, Date erstellungsDatum, TransaktionsArten art, Kategorie kategorie){
         this.bezeichnung = bezeichnung;
         this.beschreibung = beschreibung;
         this.betrag = betrag;
         this.erstellungsDatum = erstellungsDatum;
         this.art = art;
+        this.kategorie = kategorie;
     }
 //</editor-fold>
 
