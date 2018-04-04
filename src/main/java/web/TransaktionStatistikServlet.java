@@ -8,7 +8,6 @@ package web;
 import ejb.StatistikDaten;
 import ejb.TransaktionBean;
 import java.io.IOException;
-import java.util.Calendar;
 import java.util.Date;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -57,7 +56,7 @@ public class TransaktionStatistikServlet extends HttpServlet {
        request.setAttribute("ausgabenkategorien", statistik.erzeugeJson());
        
        statistik = this.transaktionBean.getStatistikLastYearPerCategory(TransaktionsArten.Einnahme);
-       statistik.setFarbe("gruen");
+       statistik.setFarbe("gruentoene");
        statistik.setTitel("Einnahmen nach Kategorien");
        request.setAttribute("einnahmenkategorien", statistik.erzeugeJson());
        
