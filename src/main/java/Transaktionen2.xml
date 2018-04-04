@@ -1,0 +1,225 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Transaktionsverzeichnis>
+   <Transaktion>
+        <Bezeichnung>Auto tanken</Bezeichnung>
+        <Beschreibung>Heute hab ich mein Auto getankt</Beschreibung>
+        <Betrag>52.23</Betrag>
+        <ErstellungsDatum> 01.01.2018</ErstellungsDatum>
+        <Art>Ausgabe</Art>
+        <Kategorie>Auto</Kategorie>
+    </Transaktion>
+    <Transaktion>
+        <Bezeichnung>Gehalt</Bezeichnung>
+        <Beschreibung>Monatliches Gehalt</Beschreibung>
+        <Betrag>2400.00</Betrag>
+        <ErstellungsDatum>05.01.2018</ErstellungsDatum>
+        <Art>Einnahme</Art>
+        <Kategorie>Geschäft</Kategorie>
+    </Transaktion>
+        
+    <Transaktion>
+        <Bezeichnung>Kino gehen</Bezeichnung>
+        <Beschreibung>Avanagers Film</Beschreibung>
+        <Betrag>52.23</Betrag>
+        <ErstellungsDatum> 15.02.2018</ErstellungsDatum>
+        <Art>Ausgabe</Art>
+        <Kategorie>Freizeit</Kategorie>
+    </Transaktion>
+    <Transaktion>
+        <Bezeichnung>Dividende</Bezeichnung>
+        <Beschreibung>Monatliches Gehalt</Beschreibung>
+        <Betrag>100.00</Betrag>
+        <ErstellungsDatum>18.02.2018</ErstellungsDatum>
+        <Art>Einnahme</Art>
+        <Kategorie>Börse</Kategorie>
+    </Transaktion>
+        
+    <Transaktion>
+        <Bezeichnung>Tagesgeld-Sparplan</Bezeichnung>
+        <Beschreibung>Sparen</Beschreibung>
+        <Betrag>150</Betrag>
+        <ErstellungsDatum> 20.03.2018</ErstellungsDatum>
+        <Art>Ausgabe</Art>
+        <Kategorie>Sonstiges</Kategorie>
+    </Transaktion>
+    <Transaktion>
+        <Bezeichnung>Gehalt</Bezeichnung>
+        <Beschreibung>Monatliches Gehalt</Beschreibung>
+        <Betrag>2000.00</Betrag>
+        <ErstellungsDatum>05.03.2018</ErstellungsDatum>
+        <Art>Einnahme</Art>
+        <Kategorie>Geschäft</Kategorie>
+    </Transaktion>
+        
+    <Transaktion>
+        <Bezeichnung>Auto tanken</Bezeichnung>
+        <Beschreibung>Heute hab ich mein Auto getankt</Beschreibung>
+        <Betrag>52.23</Betrag>
+        <ErstellungsDatum> 01.04.2018</ErstellungsDatum>
+        <Art>Ausgabe</Art>
+        <Kategorie>Auto</Kategorie>
+    </Transaktion>
+    <Transaktion>
+        <Bezeichnung>Gehalt</Bezeichnung>
+        <Beschreibung>Monatliches Gehalt</Beschreibung>
+        <Betrag>1900.00</Betrag>
+        <ErstellungsDatum>05.04.2018</ErstellungsDatum>
+        <Art>Einnahme</Art>
+        <Kategorie>Geschäft</Kategorie>
+    </Transaktion>
+        
+    <Transaktion>
+        <Bezeichnung>Auto tanken</Bezeichnung>
+        <Beschreibung>Heute hab ich mein Auto getankt</Beschreibung>
+        <Betrag>52.23</Betrag>
+        <ErstellungsDatum>01.05.2018</ErstellungsDatum>
+        <Art>Ausgabe</Art>
+        <Kategorie>Auto</Kategorie>
+    </Transaktion>
+    <Transaktion>
+        <Bezeichnung>Gehalt</Bezeichnung>
+        <Beschreibung>Monatliches Gehalt</Beschreibung>
+        <Betrag>1800.00</Betrag>
+        <ErstellungsDatum>05.05.2018</ErstellungsDatum>
+        <Art>Einnahme</Art>
+        <Kategorie>Geschäft</Kategorie>
+    </Transaktion>
+        
+    <Transaktion>
+        <Bezeichnung>Auto tanken</Bezeichnung>
+        <Beschreibung>Heute hab ich mein Auto getankt</Beschreibung>
+        <Betrag>52.23</Betrag>
+        <ErstellungsDatum>01.05.2018</ErstellungsDatum>
+        <Art>Ausgabe</Art>
+        <Kategorie>Auto</Kategorie>
+    </Transaktion>
+    <Transaktion>
+        <Bezeichnung>Gehalt</Bezeichnung>
+        <Beschreibung>Monatliches Gehalt</Beschreibung>
+        <Betrag>2500.00</Betrag>
+        <ErstellungsDatum>05.05.2018</ErstellungsDatum>
+        <Art>Einnahme</Art>
+        <Kategorie>Geschäft</Kategorie>
+    </Transaktion>
+        
+    <Transaktion>
+        <Bezeichnung>Auto tanken</Bezeichnung>
+        <Beschreibung>Heute hab ich mein Auto getankt</Beschreibung>
+        <Betrag>52.23</Betrag>
+        <ErstellungsDatum>01.06.2018</ErstellungsDatum>
+        <Art>Ausgabe</Art>
+        <Kategorie>Auto</Kategorie>
+    </Transaktion>
+    <Transaktion>
+        <Bezeichnung>Gehalt</Bezeichnung>
+        <Beschreibung>Monatliches Gehalt</Beschreibung>
+        <Betrag>3000.00</Betrag>
+        <ErstellungsDatum>05.06.2018</ErstellungsDatum>
+        <Art>Einnahme</Art>
+        <Kategorie>Geschäft</Kategorie>
+    </Transaktion>
+        
+    <Transaktion>
+        <Bezeichnung>Auto tanken</Bezeichnung>
+        <Beschreibung>Heute hab ich mein Auto getankt</Beschreibung>
+        <Betrag>52.23</Betrag>
+        <ErstellungsDatum>01.07.2018</ErstellungsDatum>
+        <Art>Ausgabe</Art>
+        <Kategorie>Auto</Kategorie>
+    </Transaktion>
+    <Transaktion>
+        <Bezeichnung>Gehalt</Bezeichnung>
+        <Beschreibung>Monatliches Gehalt</Beschreibung>
+        <Betrag>2500.00</Betrag>
+        <ErstellungsDatum>05.07.2018</ErstellungsDatum>
+        <Art>Einnahme</Art>
+        <Kategorie>Geschäft</Kategorie>
+    </Transaktion>
+        
+    <Transaktion>
+        <Bezeichnung>Auto tanken</Bezeichnung>
+        <Beschreibung>Heute hab ich mein Auto getankt</Beschreibung>
+        <Betrag>52.23</Betrag>
+        <ErstellungsDatum>01.08.2018</ErstellungsDatum>
+        <Art>Ausgabe</Art>
+        <Kategorie>Auto</Kategorie>
+    </Transaktion>
+    <Transaktion>
+        <Bezeichnung>Gehalt</Bezeichnung>
+        <Beschreibung>Monatliches Gehalt</Beschreibung>
+        <Betrag>2700.00</Betrag>
+        <ErstellungsDatum>05.08.2018</ErstellungsDatum>
+        <Art>Einnahme</Art>
+        <Kategorie>Geschäft</Kategorie>
+    </Transaktion>
+        
+    <Transaktion>
+        <Bezeichnung>Auto tanken</Bezeichnung>
+        <Beschreibung>Heute hab ich mein Auto getankt</Beschreibung>
+        <Betrag>52.23</Betrag>
+        <ErstellungsDatum>01.09.2018</ErstellungsDatum>
+        <Art>Ausgabe</Art>
+        <Kategorie>Auto</Kategorie>
+    </Transaktion>
+    <Transaktion>
+        <Bezeichnung>Gehalt</Bezeichnung>
+        <Beschreibung>Monatliches Gehalt</Beschreibung>
+        <Betrag>2850.00</Betrag>
+        <ErstellungsDatum>05.09.2018</ErstellungsDatum>
+        <Art>Einnahme</Art>
+        <Kategorie>Geschäft</Kategorie>
+    </Transaktion>
+        
+    <Transaktion>
+        <Bezeichnung>Auto tanken</Bezeichnung>
+        <Beschreibung>Heute hab ich mein Auto getankt</Beschreibung>
+        <Betrag>52.23</Betrag>
+        <ErstellungsDatum>01.10.2018</ErstellungsDatum>
+        <Art>Ausgabe</Art>
+        <Kategorie>Auto</Kategorie>
+    </Transaktion>
+    <Transaktion>
+        <Bezeichnung>Gehalt</Bezeichnung>
+        <Beschreibung>Monatliches Gehalt</Beschreibung>
+        <Betrag>2354.00</Betrag>
+        <ErstellungsDatum>05.10.2018</ErstellungsDatum>
+        <Art>Einnahme</Art>
+        <Kategorie>Geschäft</Kategorie>
+    </Transaktion>
+        
+    <Transaktion>
+        <Bezeichnung>Auto tanken</Bezeichnung>
+        <Beschreibung>Heute hab ich mein Auto getankt</Beschreibung>
+        <Betrag>52.23</Betrag>
+        <ErstellungsDatum>01.11.2018</ErstellungsDatum>
+        <Art>Ausgabe</Art>
+        <Kategorie>Auto</Kategorie>
+    </Transaktion>
+    <Transaktion>
+        <Bezeichnung>Gehalt</Bezeichnung>
+        <Beschreibung>Monatliches Gehalt</Beschreibung>
+        <Betrag>5458.00</Betrag>
+        <ErstellungsDatum>05.11.2018</ErstellungsDatum>
+        <Art>Einnahme</Art>
+        <Kategorie>Geschäft</Kategorie>
+    </Transaktion>
+        
+    <Transaktion>
+        <Bezeichnung>Auto tanken</Bezeichnung>
+        <Beschreibung>Heute hab ich mein Auto getankt</Beschreibung>
+        <Betrag>60.00</Betrag>
+        <ErstellungsDatum>01.12.2018</ErstellungsDatum>
+        <Art>Ausgabe</Art>
+        <Kategorie>Auto</Kategorie>
+    </Transaktion>
+    <Transaktion>
+        <Bezeichnung>Gehalt</Bezeichnung>
+        <Beschreibung>Monatliches Gehalt</Beschreibung>
+        <Betrag>3265.00</Betrag>
+        <ErstellungsDatum>05.12.2018</ErstellungsDatum>
+        <Art>Einnahme</Art>
+        <Kategorie>Geschäft</Kategorie>
+    </Transaktion>
+        
+	
+</Transaktionsverzeichnis> 
