@@ -66,7 +66,7 @@
             var ctx = document.getElementById('Monatsausgaben').getContext('2d');
             var chart = new Chart(ctx, {
                 // The type of chart we want to create
-                type: 'line',
+                type: 'bar',
                 // The data for our dataset
                 data: 
                             ${monatsausgaben}
@@ -82,7 +82,7 @@
             var ctx = document.getElementById('Monatseinnahmen').getContext('2d');
             var chart = new Chart(ctx, {
                 // The type of chart we want to create
-                type: 'line',
+                type: 'bar',
                 // The data for our dataset
                 data: ${monatseinnahmen}
                 ,
