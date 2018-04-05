@@ -116,6 +116,7 @@ public class TransaktionAnlegenServlet extends HttpServlet {
             if (out != null) {
                 out.close();
             }
+            
             if (filecontent != null) {
                 filecontent.close();
             }

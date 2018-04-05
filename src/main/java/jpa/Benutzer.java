@@ -33,8 +33,6 @@ public class Benutzer implements Serializable {
 
     @Id
     @Column(name = "USERNAME", length = 64)
-    @Size(min = 5, max = 64, message = "Der Benutzername muss zwischen fünf und 64 Zeichen lang sein.")
-    @NotNull(message = "Der Benutzername darf nicht leer sein.")
     private String username;
     
     public class Password {
@@ -45,7 +43,6 @@ public class Benutzer implements Serializable {
     private final Password password = new Password();
 
     @Column(name = "PASSWORD_HASH", length = 64)
-    @NotNull(message = "Das Passwort darf nicht leer sein.")
     private String passwordHash;
 
     @ElementCollection
