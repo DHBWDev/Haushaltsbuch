@@ -1,3 +1,19 @@
+/* 
+ * Copyright (C) 2018 Fabio Krämer, Samuel Haag, Sebastian Greulich
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package ejb;
 
 import java.io.*;
@@ -34,7 +50,13 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
     public TransaktionBean() {
         super(Transaktion.class);
     }
-
+    
+    /**
+     * Methode für die systematische Suche von Transaktionen.
+     * @param suchtext 
+     * @param kategorie
+     * @return Liste mit Transaktionen
+     */
     public List<Transaktion> suche(String suchtext, Kategorie kategorie) {
         // Hilfsobjekt zum Bauen des Query
         CriteriaBuilder cb = this.em.getCriteriaBuilder();
@@ -59,7 +81,14 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
 
         return em.createQuery(query).getResultList();
     }
-
+    
+    /**
+     * Ermittelt alle Transaktionen für einen gewissen Zeitraum und einen bestimmten Benutzer.
+     * @param vonDatum  Anfangsdatum
+     * @param bisDatum  Enddatum
+     * @param art       Art der Transaktion
+     * @return  Liste mit Transaktionen
+     */
     public List<Transaktion> findeAlle(Date vonDatum, Date bisDatum, TransaktionsArten art) {
         return em.createQuery("SELECT t FROM Transaktion t"
                 + " WHERE (t.benutzer = :benutzer)"
@@ -71,7 +100,15 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
                 .setParameter("bisDatum", bisDatum)
                 .getResultList();
     }
-
+    
+    /**
+     * Ermittelt alle Transaktionen für einen gewissen Zeitraum und einen bestimmten Benutzer.
+     * @param vonDatum  Anfangsdatum
+     * @param bisDatum  Enddatum
+     * @param art       Art der Transaktion
+     * @param kategorie Kategorie
+     * @return  Liste mit Transaktionen
+     */
     public List<Transaktion> findeAlle(Date vonDatum, Date bisDatum, TransaktionsArten art, Kategorie kategorie) {
         return em.createQuery("SELECT t FROM Transaktion t"
                 + " WHERE (t.benutzer = :benutzer)"
@@ -85,8 +122,11 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
                 .setParameter("art", art)
                 .getResultList();
     }
-
-    //Gibt ein StatistikDaten Objekt mit Name der Kategorie und die Summe der Transaktionen zur Kategorie zurück
+    /**
+     * Hier werden alle Transaktionen zu einer Kategorie aus dem letzten Jahr summiert.
+     * @param art Art der Transaktion (Ausgabe/Einnahme)
+     * @return StatistikDaten Objekt mit Name der Kategorie und der Summe der Transaktionen zur Kategorie
+     */
     public StatistikDaten getStatistikLastYearPerCategory(TransaktionsArten art) {
         List<Kategorie> kategorien = kategorieBean.findeAlle(art);
         System.out.println("Anzahl Kategorien " + Integer.toString(kategorien.size()));
@@ -119,7 +159,15 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
 
         return daten;
     }
-
+    
+    /**
+    *Liefert die Transaktionen aus dem gesamten vorherigen Jahr. In dieser Methode
+    *wurde explizit mit der Methode createNativeQuery gearbeitet.
+    * 
+     * @param art Art der Transaktion (Ausgabe oder Einnahme)
+     * @param date Dieses Datum markiert den letzten Wert in der Zeitreihe. 
+     * @return StatistikDaten Objekt mit Bezeichnung der Monate und dem zugehörigen Werten
+    **/
     public StatistikDaten getStatistikLastYearPerMonth(TransaktionsArten art, Date date) {
         StatistikDaten sD = new StatistikDaten();
 
@@ -174,6 +222,7 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
         //Zum Beispiel wenn es aus einem Monat keine Transaktionen gibt.
         Double[] d = new Double[12];
         System.out.println("Zeilen " + results.size());
+        
         //Die sogenannten Lampda Expressions aus JAVA 8 machen bei der Erzeugung eines Embedded Container
         //Ärger --> IndexOutOfBoundException 
 
@@ -187,6 +236,7 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
         System.out.println("Betrag " + record[0]);
         System.out.println("Monat " + record[1]);
         });*/
+        
         for (Iterator i = results.iterator(); i.hasNext();) {
             Object[] record = (Object[]) i.next();
             System.out.println("Spalten " + record.length);
@@ -197,9 +247,7 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
             System.out.println("Betrag " + record[0]);
             System.out.println("Monat " + record[1]);
         }
-        
-        
-
+       
         //Setzen der Statistik Werte. Es soll nicht fix mit dem Januar begonnen werden, 
         //sondern mit dem aktuellen Monat +1 und aktuelles Jahr -1
         int month = startMonth;
@@ -228,7 +276,17 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
         return sD;
     }
 
-//<editor-fold defaultstate="collapsed" desc="Alter Code">
+    //<editor-fold defaultstate="collapsed" desc="Alte Methode getStatistikLastYearPerMonth">
+    /**
+     *Liefert die Transaktionen aus dem gesamten vorherigen Jahr. In dieser Methode
+     *werden die Transaktionen Monat für Monat mit einer Datenbankabfrage
+     * ermittelt und aufsummiert. Gerade die Ermittlung des Anfang und Enddatums 
+     * eines Monats und der kompletten Zeitspanne macht diese Lösung sehr umständlich.
+     * 
+     * @param art Art der Transaktion (Ausgabe oder Einnahme)
+     * @return 
+     */
+    
     //Gibt ein StatistikDaten Objekt mit Name des Monats und die Summe der Transaktionen zum Monat zurück
     public StatistikDaten getStatistikLastYearPerMonthOld(TransaktionsArten art) {
 
@@ -284,6 +342,11 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
     }
 //</editor-fold>
 
+    /**
+     * Bildet die Summe der Beträge aus den Transaktionen.
+     * @param transaktionen 
+     * @return Summe der Beträge
+     */
     public double summiereTransaktionen(List<Transaktion> transaktionen) {
         Double summe = 0.0;
         for (Transaktion t : transaktionen) {
@@ -393,13 +456,23 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
 
     }
     
-    //Wird für die Tests gebraucht
-    
+    /**
+     * Diese Methode wird für das Testen der TransaktionBean verwendet. Die BenutzerBean
+     * muss für die Tests angepasst werden.
+     * @param benutzerBean 
+     * @return BenutzerBean Objekt
+     */
     public BenutzerBean mockBenutzerBean (BenutzerBean benutzerBean){
         this.benutzerBean = benutzerBean;
         return this.benutzerBean;
     }
     
+    /**
+     * Diese Methode wird für das Testen der TransaktionBean verwendet. Die KategorieBean
+     * muss für die Tests angepasst werden.
+     * @param kategorieBean
+     * @return 
+     */
     public KategorieBean mockKategorieBean (KategorieBean kategorieBean){
         this.kategorieBean = kategorieBean;
         return this.kategorieBean;

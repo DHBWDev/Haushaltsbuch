@@ -28,6 +28,36 @@ import org.mockito.Mockito;
 /**
  *
  * @author Fabio Kraemer
+ * 
+ * Nach längeren Recherchen und der Mithilfe von Herrn Schulmeister, haben wir einen
+ * EJB Container zum laufen bekommen.
+ * 
+ * Folgendes führte zu Problemen beim Erzeugen des EJB Containers:
+ * 
+ * In der TransaktionBean wurde eine Lampda Expression aus JAVA 8 verwendet. Dies
+ * führte zu einer NullPointerException beim Starten des Containers. Außerdem
+ * wurde beim Lookup der TransaktionBean immer eine Exception 
+ * (java:global/classes/TransaktionBean konnte nicht gefunden werden ..) geschmissen.
+ * 
+ * Wir hatten in der Entity  Benutzer zusätzlich zum Konstruktor und den Getter und 
+ * Setter Methoden noch weitere Methoden. Dadurch wurde die Benutzer Klasse beim
+ * Erzeugen des EJB Containers nicht als Entity registriert. Dies führte zu einem 
+ * Fehler, weil es Fremdschlüsselbeziehungen zu anderen Entities gibt.
+ * 
+ * Die Erzeugung einer eindeutigen ID für die Entity Transaktion wurde über die Notation 
+ *          @GeneratedValue(generator = "transaktion_ids")
+ *          @TableGenerator(name = "transaktion_ids", initialValue = 0, allocationSize = 1)
+ * sichergestellt. 
+ * Hier wird von der JPA automatisch eine SEQUENCE Tabelle erstellt. In dieser Tabelle wird
+ * die zuletzt erzeugte ID für die Entity Transaktion abgespeichert.
+ * Der EJB Container konnte diese Tabelle nicht erzeugen, weil ein SQL  
+ * Befehl mit einem Syntax Fehler ausgeführt wurde : "create HAUSHALTSBUCH.HAUSHALTSBUCH.SEQUENCE ..." 
+ * - Mit dem 2.Punkt konnte der Parser nichts anfangen... 
+ * Wir Erzeugen jetzt mit Hilfe von UUID.randomUUID() eine eindeutige ID für die
+ * Entity Transaktion.
+ * 
+ * Wir hoffen sehr, dass dieser Mehraufwand deutlich in die Benotung einfließt. 
+ * Fabio hat hier etwa 15 Stunden Zeit rein investiert.
  */
 
 
@@ -65,7 +95,7 @@ public class TransaktionBeanTest {
         // EJB-Referenzen besorgen
         transaktionBean = (TransaktionBean) container.getContext().lookup("java:global/classes/TransaktionBean");
         
-        //Mocken des aktuellen Benutzers - TEST
+        //Mocken der BenutzerBean und setzen des aktuellen Benutzers
         mockedUser = new Benutzer("TEST", "password");
         BenutzerBean benutzerBean = transaktionBean.mockBenutzerBean(Mockito.mock(BenutzerBean.class));
         Mockito.when(benutzerBean.gibAktuellenBenutzer()).thenReturn(mockedUser);
@@ -75,6 +105,15 @@ public class TransaktionBeanTest {
         erzeugeTestdaten(TransaktionsArten.Ausgabe);
     }
     
+    /**
+     * Erzeugt Transaktion
+     * @param betrag Betrag der Transaktion
+     * @param jahr   Jahr der Transaktion
+     * @param monat  Monat der Transaktion - 0 basiert
+     * @param tag    Tag der Transaktion
+     * @param art   Art der Transaktion
+     */
+   
      public void speichereTupel(Double betrag, int jahr, int monat, int tag, TransaktionsArten art){
         System.out.println("Datum: " + tag + "." + (monat + 1 ) + "." + jahr + ", Betrag " + betrag + ", Art " + art.getLabel());
         
@@ -83,6 +122,10 @@ public class TransaktionBeanTest {
         transaktionBean.speichernNeu(new Transaktion("TEST", "TEST", betrag, cal.getTime(), art, null, mockedUser));
     }
     
+     /**
+      * Erzeugt Testdaten bzw. Transaktionen für die Tests
+      * @param art Art der Transaktion
+      */
     public void erzeugeTestdaten (TransaktionsArten art){
         System.out.println("ejb.TransaktionBeanTest.erzeugeTestdaten()");
         System.out.println();
@@ -104,6 +147,9 @@ public class TransaktionBeanTest {
         System.out.println();
     }
     
+    /**
+     * Test der SummiereTransaktionen Methode aus der TransaktionBean
+     */
     @Test
     public void SummiereTransaktionen_Test() {
         System.out.println("ejb.TransaktionBeanTest.SummiereTransaktionen_Test()");
@@ -113,19 +159,28 @@ public class TransaktionBeanTest {
         t.add(new Transaktion("", "", 100.00, new Date(), TransaktionsArten.Ausgabe,null,mockedUser));
         t.add(new Transaktion("", "", 100.00, new Date(), TransaktionsArten.Ausgabe,null,mockedUser));
         
+        //Aufruf der Methode aus der TransaktionsBean
         Double result = transaktionBean.summiereTransaktionen(t);
+        
         assertEquals(result, 200.00,1.00);
     }
     
+    /**
+     * Test der getStatistikLastYearPerMonth aus der TransaktionBean
+     */
     @Test
     public void getStatistikLastYearPerMonth_Test(){
         System.out.println("ejb.TransaktionBeanTest.getStatistikLastYearPerMonth_Test()");
         
-        //Anfangsdatum setzen
+        //Anfangsdatum setzen - Der Monat ist 0-basiert
         Calendar cal = new GregorianCalendar();
+        //05.Mai 2017
         cal.set(2017, 04, 05);
         
+        //Aufruf der Methode mit dem Datum aus dem Calendar Objekt
         StatistikDaten result = transaktionBean.getStatistikLastYearPerMonth(TransaktionsArten.Ausgabe, cal.getTime());
+        
+        //Erwartete Werte
         
         Double [] expectedWerte = {100.00,     //Juni
                             0.00,       //Juli
