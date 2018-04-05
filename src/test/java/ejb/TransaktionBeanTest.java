@@ -79,10 +79,10 @@ public class TransaktionBeanTest {
         // macht. Jedoch können wir @EJB in einer Testklasse nicht verwenden.
         transaktionBean = (TransaktionBean) container.getContext().lookup("java:global/classes/TransaktionBean");
 
-        /*        //Testdaten erzeugen
+        //Testdaten erzeugen
         transaktionBean.speichernNeu(new Transaktion("T", "T", 100.00, new Date(), TransaktionsArten.Ausgabe, null));
         transaktionBean.speichernNeu(new Transaktion("A", "T", 200.00, new Date(), TransaktionsArten.Ausgabe, null));
-        transaktionBean.speichernNeu(new Transaktion("T", "T", 500.00, new Date(), TransaktionsArten.Ausgabe, null));*/
+        transaktionBean.speichernNeu(new Transaktion("T", "T", 500.00, new Date(), TransaktionsArten.Ausgabe, null));
     }
     
     @Test
@@ -96,13 +96,13 @@ public class TransaktionBeanTest {
         assertEquals(result, 200.00,1.00);
     }
     
-    /*    @Test
+    @Test
     public void getStatistikLastYearPerMonth_Test(){
     StatistikDaten sd = transaktionBean.getStatistikLastYearPerMonth(TransaktionsArten.Ausgabe, new Date());
     Double [] result = {0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00, 0.00,800.00} ;
     Double [] d = sd.getArrayWithWerte();
     
     Assert.assertArrayEquals(result, d);
-    }*/
+    }
     
 }
