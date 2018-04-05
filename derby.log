@@ -1,8 +1,8 @@
 ----------------------------------------------------------------
-2018-04-05 08:14:44.831 GMT:
-Booten von Derby Version The Apache Software Foundation - Apache Derby - 10.6.2.1 - (999685): Instanz a816c00e-0162-94df-4c10-00000a8b4eb0
-für Datenbankverzeichnis C:\Users\Samuel.DESKTOP-PTK85PI\AppData\Local\Temp\gfembed3455402488523646395tmp\lib\databases\embedded_default   mit Klassenladeprogrammn sun.misc.Launcher$AppClassLoader@232204a1
+2018-04-05 09:48:59.355 GMT:
+Booten von Derby Version The Apache Software Foundation - Apache Derby - 10.6.2.1 - (999685): Instanz a816c00e-0162-9535-9347-000005646260
+fÃ¼r Datenbankverzeichnis /tmp/gfembed153356420370700437tmp/lib/databases/embedded_default   mit Klassenladeprogrammn sun.misc.Launcher$AppClassLoader@7f31245a
 
 java.vendor=Oracle Corporation
-java.runtime.version=1.8.0_161-b12
-Das Ladeprogramm für Datenbankklassen wurde gestartet - derby.database.classpath=''
+java.runtime.version=1.8.0_151-8u151-b12-0ubuntu0.16.04.2-b12
+Das Ladeprogramm fÃ¼r Datenbankklassen wurde gestartet - derby.database.classpath=''
