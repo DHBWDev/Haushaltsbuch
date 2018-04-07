@@ -31,11 +31,13 @@ import jpa.Kategorie;
 import jpa.Transaktion;
 import jpa.TransaktionsArten;
 import javax.ejb.EJB;
+import javax.servlet.http.Part;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
+import org.jdom2.input.sax.XMLReaders;
 import org.jdom2.output.XMLOutputter;
 
 @Stateless
@@ -50,10 +52,11 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
     public TransaktionBean() {
         super(Transaktion.class);
     }
-    
+
     /**
      * Methode für die systematische Suche von Transaktionen.
-     * @param suchtext 
+     *
+     * @param suchtext
      * @param kategorie
      * @return Liste mit Transaktionen
      */
@@ -81,13 +84,15 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
 
         return em.createQuery(query).getResultList();
     }
-    
+
     /**
-     * Ermittelt alle Transaktionen für einen gewissen Zeitraum und einen bestimmten Benutzer.
-     * @param vonDatum  Anfangsdatum
-     * @param bisDatum  Enddatum
-     * @param art       Art der Transaktion
-     * @return  Liste mit Transaktionen
+     * Ermittelt alle Transaktionen für einen gewissen Zeitraum und einen
+     * bestimmten Benutzer.
+     *
+     * @param vonDatum Anfangsdatum
+     * @param bisDatum Enddatum
+     * @param art Art der Transaktion
+     * @return Liste mit Transaktionen
      */
     public List<Transaktion> findeAlle(Date vonDatum, Date bisDatum, TransaktionsArten art) {
         return em.createQuery("SELECT t FROM Transaktion t"
@@ -100,14 +105,16 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
                 .setParameter("bisDatum", bisDatum)
                 .getResultList();
     }
-    
+
     /**
-     * Ermittelt alle Transaktionen für einen gewissen Zeitraum und einen bestimmten Benutzer.
-     * @param vonDatum  Anfangsdatum
-     * @param bisDatum  Enddatum
-     * @param art       Art der Transaktion
+     * Ermittelt alle Transaktionen für einen gewissen Zeitraum und einen
+     * bestimmten Benutzer.
+     *
+     * @param vonDatum Anfangsdatum
+     * @param bisDatum Enddatum
+     * @param art Art der Transaktion
      * @param kategorie Kategorie
-     * @return  Liste mit Transaktionen
+     * @return Liste mit Transaktionen
      */
     public List<Transaktion> findeAlle(Date vonDatum, Date bisDatum, TransaktionsArten art, Kategorie kategorie) {
         return em.createQuery("SELECT t FROM Transaktion t"
@@ -122,10 +129,14 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
                 .setParameter("art", art)
                 .getResultList();
     }
+
     /**
-     * Hier werden alle Transaktionen zu einer Kategorie aus dem letzten Jahr summiert.
+     * Hier werden alle Transaktionen zu einer Kategorie aus dem letzten Jahr
+     * summiert.
+     *
      * @param art Art der Transaktion (Ausgabe/Einnahme)
-     * @return StatistikDaten Objekt mit Name der Kategorie und der Summe der Transaktionen zur Kategorie
+     * @return StatistikDaten Objekt mit Name der Kategorie und der Summe der
+     * Transaktionen zur Kategorie
      */
     public StatistikDaten getStatistikLastYearPerCategory(TransaktionsArten art) {
         List<Kategorie> kategorien = kategorieBean.findeAlle(art);
@@ -159,15 +170,17 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
 
         return daten;
     }
-    
+
     /**
-    *Liefert die Transaktionen aus dem gesamten vorherigen Jahr. In dieser Methode
-    *wurde explizit mit der Methode createNativeQuery gearbeitet.
-    * 
+     * Liefert die Transaktionen aus dem gesamten vorherigen Jahr. In dieser
+     * Methode wurde explizit mit der Methode createNativeQuery gearbeitet.
+     *
      * @param art Art der Transaktion (Ausgabe oder Einnahme)
-     * @param date Dieses Datum markiert den letzten Wert in der Zeitreihe. 
-     * @return StatistikDaten Objekt mit Bezeichnung der Monate und dem zugehörigen Werten
-    **/
+     * @param date Dieses Datum markiert den letzten Wert in der Zeitreihe.
+     * @return StatistikDaten Objekt mit Bezeichnung der Monate und dem
+     * zugehörigen Werten
+     *
+     */
     public StatistikDaten getStatistikLastYearPerMonth(TransaktionsArten art, Date date) {
         StatistikDaten sD = new StatistikDaten();
 
@@ -178,17 +191,17 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
         //Monat ist 0 basiert. Bsp. Januar = 0
         int currentMonth = cal.get(Calendar.MONTH);
         int currentYear = cal.get(Calendar.YEAR);
-        
+
         Benutzer user = this.benutzerBean.gibAktuellenBenutzer();
 
         System.out.println("Aktueller Benutzer: " + user.getUsername());
-        
+
         System.out.println("aktueller Monat " + Integer.toString(currentMonth));
         System.out.println("aktuelles Jahr " + Integer.toString(currentYear));
 
         //Es sollen die Werte des letzten Jahres ermittelt werden
         //Setzen des Monates +1 und Jahres -1 als Anfangsdatum
-        int startMonth = currentMonth+1;
+        int startMonth = currentMonth + 1;
         int startYear = currentYear - 1;
 
         //Jahreswechsel
@@ -222,7 +235,7 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
         //Zum Beispiel wenn es aus einem Monat keine Transaktionen gibt.
         Double[] d = new Double[12];
         System.out.println("Zeilen " + results.size());
-        
+
         //Die sogenannten Lampda Expressions aus JAVA 8 machen bei der Erzeugung eines Embedded Container
         //Ärger --> IndexOutOfBoundException 
 
@@ -236,7 +249,6 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
         System.out.println("Betrag " + record[0]);
         System.out.println("Monat " + record[1]);
         });*/
-        
         for (Iterator i = results.iterator(); i.hasNext();) {
             Object[] record = (Object[]) i.next();
             System.out.println("Spalten " + record.length);
@@ -247,7 +259,7 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
             System.out.println("Betrag " + record[0]);
             System.out.println("Monat " + record[1]);
         }
-       
+
         //Setzen der Statistik Werte. Es soll nicht fix mit dem Januar begonnen werden, 
         //sondern mit dem aktuellen Monat +1 und aktuelles Jahr -1
         int month = startMonth;
@@ -264,7 +276,7 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
             cal.set(2000, month, 1);
             //Speichern der Daten in ein Statistik Objekt
             sD.setWert(wert, new SimpleDateFormat("MMMM", Locale.GERMAN).format(cal.getTime()));
-            
+
             month = month + 1;
 
             //Jahreswechsel
@@ -278,15 +290,15 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
 
     //<editor-fold defaultstate="collapsed" desc="Alte Methode getStatistikLastYearPerMonth">
     /**
-     *Liefert die Transaktionen aus dem gesamten vorherigen Jahr. In dieser Methode
-     *werden die Transaktionen Monat für Monat mit einer Datenbankabfrage
-     * ermittelt und aufsummiert. Gerade die Ermittlung des Anfang und Enddatums 
-     * eines Monats und der kompletten Zeitspanne macht diese Lösung sehr umständlich.
-     * 
+     * Liefert die Transaktionen aus dem gesamten vorherigen Jahr. In dieser
+     * Methode werden die Transaktionen Monat für Monat mit einer
+     * Datenbankabfrage ermittelt und aufsummiert. Gerade die Ermittlung des
+     * Anfang und Enddatums eines Monats und der kompletten Zeitspanne macht
+     * diese Lösung sehr umständlich.
+     *
      * @param art Art der Transaktion (Ausgabe oder Einnahme)
-     * @return 
+     * @return
      */
-    
     //Gibt ein StatistikDaten Objekt mit Name des Monats und die Summe der Transaktionen zum Monat zurück
     public StatistikDaten getStatistikLastYearPerMonthOld(TransaktionsArten art) {
 
@@ -344,7 +356,8 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
 
     /**
      * Bildet die Summe der Beträge aus den Transaktionen.
-     * @param transaktionen 
+     *
+     * @param transaktionen
      * @return Summe der Beträge
      */
     public double summiereTransaktionen(List<Transaktion> transaktionen) {
@@ -357,123 +370,241 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
         return summe;
     }
 
-    //Methode zum Import von Transaktionen aus einer XML-File
-    public void importiereXML(File f, Benutzer aktuellerBenutzer) {
+
+    /**
+     * Holt sich den Namen der XML-Datei
+     * 
+     * @param part
+     * @return Dateiname der XML-Datei
+     */
+    private String gibXMLName(final Part part) {
+        //final String partHeader = part.getHeader("content-disposition");
+        for (String content : part.getHeader("content-disposition").split(";")) {
+            if (content.trim().startsWith("filename")) {
+                return content.substring(
+                        content.indexOf('=') + 1).trim().replace("\"", "");
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Speichern einer XML-Datei auf dem Server (hier: lokale Speicherung)
+     * 
+     * @param part
+     * @return Eingelesene XML-Datei
+     * @throws IOException 
+     */
+    public File leseXML(Part part) throws IOException {
+
+        //Pfade erstellen um die Datei zu speichern
+        String path = System.getProperty("user.home");
+        Part filePart = part;
+        String fileName = this.gibXMLName(filePart);
+
+        File xmlFile = new File(path + File.separator + fileName);
+
+        OutputStream out = null;
+        InputStream filecontent = null;
+
+        out = new FileOutputStream(xmlFile);
+        filecontent = filePart.getInputStream();
+
+        int read = 0;
+        final byte[] bytes = new byte[1024];
+
+        //XML kopieren
+        while ((read = filecontent.read(bytes)) != -1) {
+            out.write(bytes, 0, read);
+        }
+
+        //Ströme schließen
+        if (out != null) {
+            out.close();
+        }
+        if (filecontent != null) {
+            filecontent.close();
+        }
+
+        return xmlFile;
+    }
+
+    /**
+     * Import von Transaktionen aus einer XML-Datei in die DB Transaktion
+     *
+     * @param f
+     * @param aktuellerBenutzer
+     * @throws JDOMException
+     * @throws IOException
+     */
+    public void importiereXML(File f, Benutzer aktuellerBenutzer) throws JDOMException, IOException {
 
         Document doc = null;
 
-        try {
-            // Das Dokument erstellen
-            SAXBuilder builder = new SAXBuilder();
+        // Das Dokument erstellen
+        SAXBuilder builder = new SAXBuilder();
 
-            doc = builder.build(f);
+        doc = builder.build(f);
 
-            XMLOutputter fmt = new XMLOutputter();
+        XMLOutputter fmt = new XMLOutputter();
 
-            // Wurzelelement ausgeben
-            Element root = doc.getRootElement();
+        // Wurzelelement ausgeben
+        Element root = doc.getRootElement();
 
-            List<Element> children = root.getChildren();
+        List<Element> children = root.getChildren();
 
-            int i = 0;
-            while (i < children.size()) {
-                Transaktion t = new Transaktion();
+        int i = 0;
+        while (i < children.size()) {
+            //Neues Transaktionsobjekt erzeugen
+            Transaktion t = new Transaktion();
+            //XML-Knoten auslesen
+            Element bezeichnung = children.get(i).getChild("Bezeichnung");
+            Element beschreibung = children.get(i).getChild("Beschreibung");
+            Element betrag = children.get(i).getChild("Betrag");
+            Element erstellungsDatum = children.get(i).getChild("ErstellungsDatum");
+            Element art = children.get(i).getChild("Art");
+            Element kategorie = children.get(i).getChild("Kategorie");
 
-                Element bezeichnung = children.get(i).getChild("Bezeichnung");
-
-                Element beschreibung = children.get(i).getChild("Beschreibung");
-
-                Element betrag = children.get(i).getChild("Betrag");
-
-                Element erstellungsDatum = children.get(i).getChild("ErstellungsDatum");
-
-                Element art = children.get(i).getChild("Art");
-
-                //wird nicht benötigt
-                //Element benutzer = children.get(i).getChild("Benutzer");
-                //Wenn Kategorie noch nicht vorhanden, automatisch anlegen
-                //Kategorie mitgeben welche Art
-                Element kategorie = children.get(i).getChild("Kategorie");
-
-                //XML-Werte dem Objekte übergeben
-                if (art.getValue().equals(TransaktionsArten.Ausgabe.getLabel())) {
-                    t.setArt(TransaktionsArten.Ausgabe);
-                }
-                if (art.getValue().equals(TransaktionsArten.Einnahme.getLabel())) {
-                    t.setArt(TransaktionsArten.Einnahme);
-                }
-
-                //Wird beim erzeugen eines neuen Transaktionsobjekt gemacht
-                //t.setId(UUID.randomUUID().toString());
-                
-                t.setBenutzer(aktuellerBenutzer);
-                t.setBetrag(Double.valueOf(betrag.getValue()));
-                t.setBeschreibung(beschreibung.getValue());
-                t.setBezeichnung(bezeichnung.getValue());
-
-                //Datum anlegen
-                DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
-                Date startDate = new Date();
-                try {
-                    startDate = df.parse(erstellungsDatum.getValue());
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                t.setErstellungsDatum(startDate);
-
-                //Kategorieprüfung - Ist Kategorie schon vorhanden?
-                //Suche übergebene Kategorie
-                Kategorie aktuelleKategorie = this.kategorieBean.findeMitId(kategorie.getValue());
-                //Wenn ungleich null -> Kategorie vorhanden
-                if (aktuelleKategorie != null) {
-                    t.setKategorie(aktuelleKategorie);
-                } else {
-                    //Wenn null -> neue Kategorie anlegen
-                    //String bezeichnung, String art, Benutzer benutzer
-
-                    TransaktionsArten tArt = null;
-                    if (art.getValue().equals(TransaktionsArten.Ausgabe.getLabel())) {
-                        tArt = TransaktionsArten.Ausgabe;
-                    }
-                    if (art.getValue().equals(TransaktionsArten.Einnahme.getLabel())) {
-                        tArt = TransaktionsArten.Einnahme;
-                    }
-
-                    aktuelleKategorie = new Kategorie(kategorie.getValue(), tArt, aktuellerBenutzer);
-                    this.kategorieBean.speichernNeu(aktuelleKategorie);
-                    t.setKategorie(aktuelleKategorie);
-                }
-
-                this.speichernNeu(t);
-
-                i++;
-
+            //XML-Werte dem Objekte übergeben
+            if (art.getValue().equals(TransaktionsArten.Ausgabe.getLabel())) {
+                t.setArt(TransaktionsArten.Ausgabe);
+            }
+            if (art.getValue().equals(TransaktionsArten.Einnahme.getLabel())) {
+                t.setArt(TransaktionsArten.Einnahme);
             }
 
-        } catch (JDOMException | IOException e) {
-            e.printStackTrace();
+            //Wird beim erzeugen eines neuen Transaktionsobjekt gemacht
+            t.setId(UUID.randomUUID().toString());
+            t.setBenutzer(aktuellerBenutzer);
+            t.setBetrag(Double.valueOf(betrag.getValue()));
+            t.setBeschreibung(beschreibung.getValue());
+            t.setBezeichnung(bezeichnung.getValue());
+
+            //Datum anlegen
+            DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+            Date startDate = new Date();
+            try {
+                startDate = df.parse(erstellungsDatum.getValue());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            t.setErstellungsDatum(startDate);
+
+            //Kategorieprüfung - Ist Kategorie schon vorhanden?
+            //Suche übergebene Kategorie
+            Kategorie aktuelleKategorie = this.kategorieBean.findeMitId(kategorie.getValue());
+            //Wenn ungleich null -> Kategorie vorhanden
+            if (aktuelleKategorie != null) {
+                t.setKategorie(aktuelleKategorie);
+            } else {
+                //Wenn null -> neue Kategorie anlegen
+                //String bezeichnung, String art, Benutzer benutzer
+
+                TransaktionsArten tArt = null;
+                if (art.getValue().equals(TransaktionsArten.Ausgabe.getLabel())) {
+                    tArt = TransaktionsArten.Ausgabe;
+                }
+                if (art.getValue().equals(TransaktionsArten.Einnahme.getLabel())) {
+                    tArt = TransaktionsArten.Einnahme;
+                }
+
+                aktuelleKategorie = new Kategorie(kategorie.getValue(), tArt, aktuellerBenutzer);
+                this.kategorieBean.speichernNeu(aktuelleKategorie);
+                t.setKategorie(aktuelleKategorie);
+            }
+
+            this.speichernNeu(t);
+
+            i++;
+
+        }
+    }
+
+    /**
+     * Validiert eine XML-Datei gegen einen DTD-String
+     * DTD-String wird als Vereinfachung verwendet
+     * 
+     * @param xmlFile
+     * @param path
+     * @throws FileNotFoundException
+     * @throws IOException
+     * @throws JDOMException
+     */
+    public void validiereXML(File xmlFile, String path) throws FileNotFoundException, IOException, JDOMException {
+        //Erstellen einer seperaten XML zur Validierung
+        File validationXML = new File(path + File.separator + "Validation.xml");
+        BufferedReader inputStream = new BufferedReader(new FileReader(xmlFile));
+
+        //Validierungsstring (DTD)
+        String validationString
+                = "<!DOCTYPE Transaktionsverzeichnis [\n"
+                + "<!ELEMENT Transaktionsverzeichnis (Transaktion)*>\n"
+                + "<!ELEMENT Transaktion (Bezeichnung, Beschreibung, Betrag, ErstellungsDatum, Art, Kategorie)>\n"
+                + "<!ELEMENT Bezeichnung (#PCDATA)>\n"
+                + "<!ELEMENT Beschreibung (#PCDATA)>\n"
+                + "<!ELEMENT Betrag (#PCDATA)>\n"
+                + "<!ELEMENT ErstellungsDatum (#PCDATA)>\n"
+                + "<!ELEMENT Art (#PCDATA)>\n"
+                + "<!ELEMENT Kategorie (#PCDATA)>\n"
+                + "]>";
+
+        // if validationXML doesnt exists, then create it
+        if (!validationXML.exists()) {
+            validationXML.createNewFile();
+        }
+
+        //eingelesenes XML-File in seperate XML speichern
+        FileWriter filewriter = new FileWriter(validationXML.getAbsoluteFile());
+        BufferedWriter outputStream = new BufferedWriter(filewriter);
+
+        String count;
+
+        while ((count = inputStream.readLine()) != null) {
+            outputStream.write(count.replace("ï»¿", ""));
+            outputStream.newLine();
+            System.out.println("Count:" + count.replace("ï»¿", ""));
+            if (count.contains("?xml")) {
+                outputStream.write(validationString);
+                outputStream.newLine();
+            }
+
+        }
+        outputStream.flush();
+        outputStream.close();
+        inputStream.close();
+
+        //Sax Builder erzeugen
+        SAXBuilder builder = new SAXBuilder(XMLReaders.DTDVALIDATING);
+
+        Document jdomDocValidatedTrue = builder.build(validationXML);
+
+        //XML prüfen
+        if (jdomDocValidatedTrue.hasRootElement() == false) {
+            throw new JDOMException();
         }
 
     }
-    
+
     /**
-     * Diese Methode wird für das Testen der TransaktionBean verwendet. Die BenutzerBean
-     * muss für die Tests angepasst werden.
-     * @param benutzerBean 
+     * Diese Methode wird für das Testen der TransaktionBean verwendet. Die
+     * BenutzerBean muss für die Tests angepasst werden.
+     *
+     * @param benutzerBean
      * @return BenutzerBean Objekt
      */
-    public BenutzerBean mockBenutzerBean (BenutzerBean benutzerBean){
+    public BenutzerBean mockBenutzerBean(BenutzerBean benutzerBean) {
         this.benutzerBean = benutzerBean;
         return this.benutzerBean;
     }
-    
+
     /**
-     * Diese Methode wird für das Testen der TransaktionBean verwendet. Die KategorieBean
-     * muss für die Tests angepasst werden.
+     * Diese Methode wird für das Testen der TransaktionBean verwendet. Die
+     * KategorieBean muss für die Tests angepasst werden.
+     *
      * @param kategorieBean
-     * @return 
+     * @return
      */
-    public KategorieBean mockKategorieBean (KategorieBean kategorieBean){
+    public KategorieBean mockKategorieBean(KategorieBean kategorieBean) {
         this.kategorieBean = kategorieBean;
         return this.kategorieBean;
     }

@@ -21,8 +21,7 @@
                     <button type="submit" name="action" value="create" class="icon-pencil">
                         XML-Datei einlesen
                     </button>
-                    <!---
-                    <input type="submit" value="Upload" name="upload" id="upload" /> -->
+   
                 </form>
 
             </div>

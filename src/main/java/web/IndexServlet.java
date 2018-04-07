@@ -43,7 +43,6 @@ public class IndexServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
-        //Dies ist eine Teständerung für Jenkins
         response.sendRedirect(WebUtils.appUrl(request, "/app/transaktionen/"));
     }
 
