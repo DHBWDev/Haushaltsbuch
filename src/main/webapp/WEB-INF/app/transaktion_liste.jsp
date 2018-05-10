@@ -14,7 +14,7 @@
         <form method="GET" class="horizontal" id="search">
             <input type="text" name="suche_text" value="${param.suche_text}" placeholder="Beschreibung"/>
             
-            <select name="search_kategorie">
+            <select name="suche_kategorie">
                 <option value="">Alle Kategorien</option>
 
                 <c:forEach items="${kategorien}" var="kategorie">

@@ -370,10 +370,9 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
         return summe;
     }
 
-
     /**
      * Holt sich den Namen der XML-Datei
-     * 
+     *
      * @param part
      * @return Dateiname der XML-Datei
      */
@@ -390,10 +389,10 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
 
     /**
      * Speichern einer XML-Datei auf dem Server (hier: lokale Speicherung)
-     * 
+     *
      * @param part
      * @return Eingelesene XML-Datei
-     * @throws IOException 
+     * @throws IOException
      */
     public File leseXML(Part part) throws IOException {
 
@@ -521,9 +520,9 @@ public class TransaktionBean extends EntityBean<Transaktion, Long> {
     }
 
     /**
-     * Validiert eine XML-Datei gegen einen DTD-String
-     * DTD-String wird als Vereinfachung verwendet
-     * 
+     * Validiert eine XML-Datei gegen einen DTD-String DTD-String wird als
+     * Vereinfachung verwendet
+     *
      * @param xmlFile
      * @param path
      * @throws FileNotFoundException
